@@ -32,7 +32,7 @@ void * run_client(void * arg){
 	int sock= *((int *)arg);
 	char buff[1025];
 	buff[1024]='0';
-	//printf("NEW CLIENT %d\n");
+	printf("NEW CLIENT %d\n");
 	char type[5],id[9],mess[141],nb_mess[4];
 
 	recu=recv(sock,buff,1023*sizeof(char),0);
