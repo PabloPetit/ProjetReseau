@@ -17,7 +17,6 @@ void post_old_msg(int sock,int nb){
 	if(lt==NULL || lt->msg==NULL) return;
 
 	while(i<nb && lt->suivant != NULL){
-		//printf("UN TOUR\n");
 		char buff[164];
 		sprintf(buff,"OLDM %s %s %s\r\n",lt->msg->num_mess,lt->msg->id,lt->msg->message);
 		send(sock,buff,strlen(buff),0);
@@ -32,7 +31,7 @@ void * run_client(void * arg){
 	int sock= *((int *)arg);
 	char buff[1025];
 	buff[1024]='0';
-	printf("NEW CLIENT %d\n");
+	printf("NEW CLIENT \n");
 	char type[5],id[9],mess[141],nb_mess[4];
 
 	recu=recv(sock,buff,1023*sizeof(char),0);
@@ -74,7 +73,7 @@ void *run_server_tcp(void *arg){
 	extern diffuseur * diff;
 
 	int sock=socket(PF_INET,SOCK_STREAM,0);
-
+	
 	struct sockaddr_in sockaddress;
 	sockaddress.sin_family=AF_INET;
 	sockaddress.sin_port=htons(atoi(diff->port_tcp));

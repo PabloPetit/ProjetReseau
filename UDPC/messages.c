@@ -53,12 +53,23 @@ message * make_msg(char * type,char * id, char * mess){
 	sprintf(msg->id,"%s",id);
 	return msg;
 }
+/*
+void add_msg_df(message * msg){
+	liste_msg * lt = lt_df;
+	if(lt->mg==NULL){
+		lt->msg=msg;
+		return;
+	}
+	while(lt->suivant!=NULL)lt=lt->suivant;
+	lt->suivant = make_list_msg//c'est nul faut passer direct les pointeur de listes
+}*/
 
 void add_msg(liste_msg * liste,message * msg){
 	//pthread_mutex_lock(&verrou);
 	int index=0;
 	liste_msg * lt = liste;
 	if(lt->msg==NULL){
+		printf("IF 1\n");
 		lt->msg=msg;
 		sprintf(msg->num_mess,"0000");
 		return;
@@ -88,24 +99,26 @@ void free_msg(message * msg){
 	//pthread_mutex_unlock(&verrou);
 }
 
+
 message * transfert_msg(){
 	//pthread_mutex_lock(&verrou);
 	liste_msg * lt=lt_at;
 	if(lt==NULL || lt->msg==NULL){
-		pthread_mutex_unlock(&verrou);
+		//pthread_mutex_unlock(&verrou);
 		return NULL;
 	}
 	if(lt->suivant== NULL){
 		message * mess = lt->msg;
 		add_msg(lt_df,mess);
 		lt->msg=NULL;
-		//pthread_mutex_unlock(&verrou);
+		pthread_mutex_unlock(&verrou);
 		return mess;
 	}
 	lt_at = lt->suivant;
 	message * mess = lt->msg;
-	add_msg(lt_df,mess);
-	free(lt);
+	liste_msg * tmp=lt_df;
+	lt_df=lt;
+	lt_df->suivant=tmp;
 	//pthread_mutex_unlock(&verrou);
 	return mess;
 }
@@ -136,10 +149,9 @@ void print_liste(liste_msg * liste){
 	printf("\n---N° %s Type : %s Identifiant : %s---\n\n",lt->msg->num_mess,lt->msg->type,lt->msg->id);
 	printf("%s\n",lt->msg->message);
 	printf("\n--Fin de la liste --\n\n");
-	//pthread_mutex_unlock(&verrou);
 }
 
-int charger_fichier(char * path){
+void charger_fichier(char * path){
 	//pthread_mutex_lock(&verrou);
 	int fic,lus,i;
 	extern diffuseur * diff;
@@ -149,7 +161,6 @@ int charger_fichier(char * path){
 	if((fic=open(path,O_RDONLY))==-1){
 		printf("Impossible de lire le fichier\n");
 		//pthread_mutex_unlock(&verrou);
-		return 0;
 	}
 	while((lus=read(fic,buff,1024))!=0){
 		int index_point=0;
@@ -165,5 +176,4 @@ int charger_fichier(char * path){
 		}
 	}
 	//pthread_mutex_unlock(&verrou);
-	return 1;
 }

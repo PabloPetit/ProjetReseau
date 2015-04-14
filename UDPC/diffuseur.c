@@ -21,7 +21,7 @@ void * diffuseur_run(void * arg){
 				if(msg==NULL)continue;
 				char buff[1024];
 				sprintf(buff,"%s\r\n",msg->message);
-				printf("%s\n",buff);
+				//printf("%s\n",buff);
 				sendto(sock,buff,strlen(buff),0,saddr,(socklen_t)sizeof(struct sockaddr_in));
 				sleep(diff->interval);
 			}

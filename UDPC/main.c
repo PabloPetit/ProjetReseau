@@ -184,6 +184,8 @@ int main(int argc, char * argv[]){
 		charger_fichier(path);
 	}
 
+	//print_liste(lt_at);
+	
 	pthread_t thread_tcp;
 	pthread_t thread_dif;
 
@@ -193,7 +195,7 @@ int main(int argc, char * argv[]){
 	pthread_join(thread_tcp,NULL);
 	pthread_join(thread_dif,NULL);
 	
-
+	
 	printf("END OF MAIN\n");
 
 	return 0;
