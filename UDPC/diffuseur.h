@@ -19,11 +19,11 @@
 #include "messages.h"
 
 typedef struct diffuseur{
-	char* ipv4;//15
-	char* port_multi;//4
-	char* port_tcp;//4
-	char* id;//8
-	int interval;
+    char* ipv4;//15
+    char* port_multi;//4
+    char* port_tcp;//4
+    char* id;//8
+    int interval;
 }diffuseur;
 
 void * diffuseur_run(void * );

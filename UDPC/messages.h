@@ -13,16 +13,16 @@
 #include "diffuseur.h"
 
 typedef struct message{
-	char *type;//4
-	char *num_mess;//4
-	char *id;//8
-	char *message;//140
+    char *type;//4
+    char *num_mess;//4
+    char *id;//8
+    char *message;//140
 }message;
 
 typedef struct liste_msg{
-	int index;
-	message * msg;
-	struct liste_msg * suivant;
+    int index;
+    message * msg;
+    struct liste_msg * suivant;
 }liste_msg;
 
 
@@ -35,5 +35,6 @@ void add_msg(liste_msg *,message *);
 void print_liste(liste_msg *);
 message * transfert_msg();
 void free_msg(message *);
- 
+void charger_fichier(char *);
+
 #endif

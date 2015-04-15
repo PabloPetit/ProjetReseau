@@ -15,8 +15,8 @@
 #include "diffuseur.h"
 
 typedef struct args_tcp{
-	int portR;
-	char *ipv4;
+    int portR;
+    char *ipv4;
 }args_tcp;
 
 int ajout_msg(char *,char *);

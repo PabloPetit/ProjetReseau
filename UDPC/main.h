@@ -14,6 +14,5 @@ void printHelp();
 int check_id_valide(char*);
 void check_port_valide(char *,char *);
 char * format_ipv4(char *);
-charger_fichier(char *);
 
 #endif
