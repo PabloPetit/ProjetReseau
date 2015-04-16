@@ -99,6 +99,7 @@ int main(int argc, char * argv[]){
     
     int i,d,f;
     char *ipv4,*id,*port_multi,*port_tcp,*path;
+    ipv4=NULL;id=NULL;port_multi=NULL;port_tcp=NULL;path=NULL;
     i=0,d=0,f=0;
     ipv4=malloc(sizeof(char)*(strlen(argv[i])+1));
     ipv4[strlen(argv[i])]='\0';
@@ -174,18 +175,17 @@ int main(int argc, char * argv[]){
     
     print_param_final(id,port_tcp,port_multi,ipv4);
     
-    diff = make_diffuseur(id,port_tcp,port_multi,ipv4,2);
+    diff = make_diffuseur(id,port_tcp,port_multi,ipv4,1);
     
     print_diffuseur(diff);
     
-    init_list_msg();
     
     if(path!=NULL && f){
         charger_fichier(path);
     }
     
-    print_liste(lt_at);
-    
+    //print_liste(lt_at);
+
     pthread_t thread_tcp;
     pthread_t thread_dif;
     
@@ -194,7 +194,6 @@ int main(int argc, char * argv[]){
     
     pthread_join(thread_tcp,NULL);
     pthread_join(thread_dif,NULL);
-    
     
     printf("END OF MAIN\n");
     

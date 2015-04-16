@@ -1,23 +1,11 @@
 #include "server_tcp.h"
 
-void bre(){}
-
-int ajout_msg(char * id,char * mess){
-    extern liste_msg * lt_at;
-    if(strlen(id)!=8 || strlen(mess)>140)return 0;
-    message * msg = make_msg("DIFF",id,mess);
-    bre();
-    add_msg(lt_at,msg);
-    print_liste(lt_at);// C'est par la que ça déconne
-    return 1;
-}
-
 void post_old_msg(int sock,int nb){
     extern liste_msg * lt_df;
     liste_msg * lt=lt_df;
     int i=0;
     
-    if(lt==NULL || lt->msg==NULL) return;
+    if(lt==NULL || lt==0) return;
     
     while(i<nb && lt->suivant != NULL){
         char buff[164];
@@ -29,50 +17,43 @@ void post_old_msg(int sock,int nb){
     send(sock,"ENDM\r\n",(sizeof(char)*6),0);
 }
 
+int match_message(char * msg,long size,int sock){
+    char type[5];
+    if(size<8||size>156){
+        return 1;
+    }
+    snprintf(type,5,"%s",msg);
+    if(strcmp("MESS",type)==0){
+        if(size<15)return 1;//4+1+8+2
+        char id[9],mess[141];
+        snprintf(id,9,"%s",(msg+5));
+        snprintf(mess, size-15,"%s",(msg+14));
+        add_msg(make_msg(id, "DIFF", mess));
+    }else if(strcmp("LAST",type)==0){
+        if(size<10)return 1;//4+1+3+2
+        int nb;
+        if((nb=atoi((msg+5)))<0)return 2;
+        post_old_msg(sock,nb);
+    }
+    return 0;
+}
+
 void * run_client(void * arg){
-    int recu;
+    long recu;
     int sock= *((int *)arg);
     char buff[1025];
-    buff[1024]='0';
-    printf("NEW CLIENT \n");
-    char type[5],id[9],mess[141],nb_mess[4];
+    buff[1024]='\0';
+   
     
-    recu=recv(sock,buff,1023*sizeof(char),0);
+    printf("\nUn nouveau client c'est connecter.\n\n");
     
-    if(recu<5 || recu>=164){
-        printf("\nMessage erroné reçu -Mauvais format- connexion fermé\n\n");
-        close(sock);
-        return NULL;
+    recu=recv(sock,buff,1024*sizeof(char),0);
+    
+    if(!match_message(buff,recu,sock)){
+        //erreur
     }
     
-    snprintf(type,5,"%s",buff);
-    if(strcmp("MESS",type)==0 && recu >15){
-        snprintf(id,9,"%s",(buff+5));
-        snprintf(mess,141,"%s",(buff+14));
-        mess[strlen(mess)-1]='\0';//-----
-        if(ajout_msg(id,mess)){
-            printf("Message de %s ajouté à la liste de diffusion.\n",id);
-            char tmp[9]="ACKM\r\n";
-            tmp[6]='\0';
-            send(sock,tmp,7*sizeof(char),0);
-            
-        }else{
-            printf("\nMessage erroné reçu -Mauvais format- connexion fermé\n\n");
-        }
-    }else if(strcmp("LAST",type)==0){
-        int nb;
-        snprintf(nb_mess,3,"%s",buff+5);
-        if((nb=atoi(nb_mess))>0){
-            post_old_msg(sock,nb);
-        }else{
-            printf("\nMessage erroné reçu -Valeur nb_mess incorrect- connexion fermé\n\n");
-        }
-    }else{
-        printf("\nMessage erroné reçu -Type inconnu- connexion fermé\n\n");
-    }
-    printf("END OF RECV\n");
     close(sock);
-    //free(sock);
     return NULL;
 }
 

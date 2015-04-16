@@ -5,6 +5,7 @@ diffuseur * diff;
 void * diffuseur_run(void * arg){
     extern liste_msg * lt_at;
     extern liste_msg * lt_df;
+    
     int sock=socket(PF_INET,SOCK_DGRAM,0);
     struct addrinfo *first_info;
     struct addrinfo hints;
@@ -12,19 +13,21 @@ void * diffuseur_run(void * arg){
     hints.ai_family = AF_INET;
     hints.ai_socktype=SOCK_DGRAM;
     int r=getaddrinfo(diff->ipv4,diff->port_multi,NULL,&first_info);
+    
     if(r==0){
         if(first_info!=NULL){
+            
             message * msg;
             struct sockaddr *saddr=first_info->ai_addr;
+            
             while(42){
-                msg=transfert_msg();
+                msg=transfert();
                 if(msg==NULL){
                     sleep(1);
                     continue;
                 }
                 char buff[1024];
                 sprintf(buff,"%s\r\n",msg->message);
-                //printf("%s\n",buff);
                 sendto(sock,buff,strlen(buff),0,saddr,(socklen_t)sizeof(struct sockaddr_in));
                 sleep(diff->interval);
             }
