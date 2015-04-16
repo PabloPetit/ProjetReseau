@@ -24,13 +24,19 @@ int match_message(char * msg,long size,int sock){
     }
     snprintf(type,5,"%s",msg);
     if(strcmp("MESS",type)==0){
-        if(size<15)return 1;//4+1+8+2
+        if(size<15)return 1;
         char id[9],mess[141];
+        
         snprintf(id,9,"%s",(msg+5));
         snprintf(mess, size-15,"%s",(msg+14));
+        
         add_msg(make_msg(id, "DIFF", mess));
+        
+        char tmp[9]="ACKM\r\n";
+        tmp[8]='\0';
+        send(sock,tmp,9,0);
     }else if(strcmp("LAST",type)==0){
-        if(size<10)return 1;//4+1+3+2
+        if(size!=10)return 1;
         int nb;
         if((nb=atoi((msg+5)))<0)return 2;
         post_old_msg(sock,nb);
@@ -50,7 +56,7 @@ void * run_client(void * arg){
     recu=recv(sock,buff,1024*sizeof(char),0);
     
     if(!match_message(buff,recu,sock)){
-        //erreur
+        printf("La demande du client ne respecte pas le format, connexion fermée.\n");
     }
     
     close(sock);

@@ -184,7 +184,7 @@ int main(int argc, char * argv[]){
         charger_fichier(path);
     }
     
-    //print_liste(lt_at);
+    print_liste(lt_at);
 
     pthread_t thread_tcp;
     pthread_t thread_dif;

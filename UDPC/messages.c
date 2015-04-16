@@ -4,9 +4,11 @@
 liste_msg * lt_at;
 liste_msg * lt_df;
 int cmp_msg = 0;
+pthread_mutex_t verrou= PTHREAD_MUTEX_INITIALIZER;
 
 
 void print_liste(liste_msg * liste){
+    pthread_mutex_lock(&verrou);
     liste_msg * lt = liste;
     if(lt==NULL){
         printf("\nListe vide.\n\n");
@@ -21,6 +23,7 @@ void print_liste(liste_msg * liste){
     printf("\n---N° %s Type : %s Identifiant : %s---\n\n",lt->msg->num_mess,lt->msg->type,lt->msg->id);
     printf("%s\n",lt->msg->message);
     printf("\n--Fin de la liste --\n\n");
+    pthread_mutex_unlock(&verrou);
 }
 
 void format_mess(char * src,char * dest){
@@ -85,18 +88,23 @@ liste_msg * make_list(message * msg){
 }
 
 void add_msg(message * msg){
+    pthread_mutex_lock(&verrou);
     liste_msg * lt = lt_at;
     
     if(lt==NULL || lt==0){
         lt_at=make_list(msg);
+        pthread_mutex_unlock(&verrou);
         return;
     }
     while(lt->suivant!=NULL)lt=lt->suivant;
     lt->suivant=make_list(msg);
+    pthread_mutex_unlock(&verrou);
 }
 
 message * transfert(){
+    pthread_mutex_lock(&verrou);
     if(lt_at==NULL ||lt_at==0){
+        pthread_mutex_unlock(&verrou);
         return NULL;
     }
     liste_msg * lt = lt_at;
@@ -105,7 +113,7 @@ message * transfert(){
     lt_at=(lt_at->suivant==NULL)?NULL:lt->suivant;
     lt->suivant=lt_df;//Si ça merde, ça vient d'ici
     lt_df=lt;
-    
+    pthread_mutex_unlock(&verrou);
     return msg;
 }
 
