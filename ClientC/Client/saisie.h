@@ -7,6 +7,9 @@
 #include <ctype.h>
 #include "getch.h"
 
-void saisie(int,char *,const char *);
+#define ALPHANUMERIC 0
+#define NUMERIC 1
+
+void saisie(int,char *,const char *,int);
 
 #endif /* defined(__Client__saisie__) */

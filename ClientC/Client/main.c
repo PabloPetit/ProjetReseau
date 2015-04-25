@@ -15,7 +15,7 @@ void format_id(char * src,char * dest){
 }
 
 void saisie_id(){
-    saisie(8, id, "Veuiller saisir un identifiant :\n");
+    saisie(8, id, "Veuiller saisir un identifiant :\n",ALPHANUMERIC);
 }
 
 int main(int argc, const char * argv[]) {
