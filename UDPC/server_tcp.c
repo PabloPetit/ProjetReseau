@@ -2,6 +2,8 @@
 
 void post_old_msg(int sock,int nb){
     extern liste_msg * lt_df;
+    extern pthread_mutex_t verrou;
+    pthread_mutex_lock(&verrou);
     liste_msg * lt=lt_df;
     int i=0;
     
@@ -15,6 +17,7 @@ void post_old_msg(int sock,int nb){
         i++;
     }
     send(sock,"ENDM\r\n",(sizeof(char)*6),0);
+    pthread_mutex_unlock(&verrou);
 }
 
 int match_message(char * msg,long size,int sock){
