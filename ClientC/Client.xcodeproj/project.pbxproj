@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6E16ADD81AEBD9FA00DC5510 /* saisie.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E16ADD61AEBD9FA00DC5510 /* saisie.c */; };
 		6E16ADDB1AEBEAAA00DC5510 /* gestionnaire.c in Sources */ = {isa = PBXBuildFile; fileRef = 6E16ADD91AEBEAAA00DC5510 /* gestionnaire.c */; };
+		6EA6AF741AED410A00F0A8B5 /* diffuseur.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EA6AF721AED410A00F0A8B5 /* diffuseur.c */; };
 		6EFC00831AE59EE20004336B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EFC00821AE59EE20004336B /* main.c */; };
 		6EFC008C1AE5A6150004336B /* getch.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EFC008A1AE5A6150004336B /* getch.c */; };
 		6EFC008F1AE5A6B70004336B /* menu.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EFC008D1AE5A6B70004336B /* menu.c */; };
@@ -32,6 +33,8 @@
 		6E16ADD71AEBD9FA00DC5510 /* saisie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = saisie.h; sourceTree = "<group>"; };
 		6E16ADD91AEBEAAA00DC5510 /* gestionnaire.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gestionnaire.c; sourceTree = "<group>"; };
 		6E16ADDA1AEBEAAA00DC5510 /* gestionnaire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gestionnaire.h; sourceTree = "<group>"; };
+		6EA6AF721AED410A00F0A8B5 /* diffuseur.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = diffuseur.c; sourceTree = "<group>"; };
+		6EA6AF731AED410A00F0A8B5 /* diffuseur.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diffuseur.h; sourceTree = "<group>"; };
 		6EFC007F1AE59EE20004336B /* Client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Client; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EFC00821AE59EE20004336B /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		6EFC00891AE59F200004336B /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
@@ -79,12 +82,14 @@
 				6EFC008A1AE5A6150004336B /* getch.c */,
 				6E16ADD61AEBD9FA00DC5510 /* saisie.c */,
 				6E16ADD91AEBEAAA00DC5510 /* gestionnaire.c */,
+				6EA6AF721AED410A00F0A8B5 /* diffuseur.c */,
 				6EFC00891AE59F200004336B /* main.h */,
 				6EFC008E1AE5A6B70004336B /* menu.h */,
 				6EFC00911AE5A80C0004336B /* menu_principal.h */,
 				6EFC008B1AE5A6150004336B /* getch.h */,
 				6E16ADD71AEBD9FA00DC5510 /* saisie.h */,
 				6E16ADDA1AEBEAAA00DC5510 /* gestionnaire.h */,
+				6EA6AF731AED410A00F0A8B5 /* diffuseur.h */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -150,6 +155,7 @@
 				6EFC008F1AE5A6B70004336B /* menu.c in Sources */,
 				6E16ADDB1AEBEAAA00DC5510 /* gestionnaire.c in Sources */,
 				6E16ADD81AEBD9FA00DC5510 /* saisie.c in Sources */,
+				6EA6AF741AED410A00F0A8B5 /* diffuseur.c in Sources */,
 				6EFC00921AE5A80C0004336B /* menu_principal.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

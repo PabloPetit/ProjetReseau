@@ -9,7 +9,10 @@
 
 #define ALPHANUMERIC 0
 #define NUMERIC 1
+#define IPV4 2
 
+
+void print(char *);
 void saisie(int,char *,const char *,int);
 
 #endif /* defined(__Client__saisie__) */
