@@ -45,6 +45,11 @@ public class annuaire {
 		return false;
 	}
 	
+	public synchronized boolean supp(IDdiff diff){
+		taille--;
+		return list.remove(diff);
+	}
+	
 	public synchronized int length(){
 		try{
 			//wait();
@@ -67,7 +72,7 @@ public class annuaire {
 	}
 	
 	public synchronized IDdiff getRandom(){
-		if(taille>0){
+		if(taille>1){
 			IDdiff tmp = null;
 			Iterator<IDdiff> it = list.iterator();
 			Random rand = new Random();
@@ -77,10 +82,12 @@ public class annuaire {
 			}
 			
 			return tmp;
+		}else if (taille > 0){
+			return list.get(0);
 		}
 		return null;
 	}
-	
+		
 	public static void main(String[] args){
 		
 	/*	annuaire bottin = new annuaire(10);

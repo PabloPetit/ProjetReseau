@@ -21,6 +21,7 @@ public class threadGestion implements Runnable {
 				pw = new PrintWriter(new OutputStreamWriter(service.getOutputStream()));
 				String read="";
 				String[] req;
+				IDdiff diffuseur = null;
 				while(true){
 					read = bf.readLine();
 					System.out.println("gestion lit -> "+read);
@@ -29,8 +30,8 @@ public class threadGestion implements Runnable {
 				
 				//requete inscription
 					if(req[0].equals("REGI")){
-						if(req.length == 6){
-							IDdiff diffuseur = new IDdiff(req, service);
+						if(verifIns(req)){
+							diffuseur = new IDdiff(req, service);
 							if(bottin.add(diffuseur)){
 								pw.print("REOK\r\n");
 								pw.flush();
@@ -57,6 +58,11 @@ public class threadGestion implements Runnable {
 						//service.close();
 						//break;
 					}
+					//requete test
+					else if(req[0].equals("IMOK")){
+						//if(diffuseur != null)
+						diffuseur.setTestOK();
+					}
 					
 				} 	bf.close(); pw.close(); service.close();
 			}
@@ -66,5 +72,23 @@ public class threadGestion implements Runnable {
 			catch(Exception e){
 				e.printStackTrace();
 			}
+	}
+	public static boolean verifIns(String tab[]){
+		if(tab.length != 6 ) return false;
+		if(tab[1].length() > 8 || tab[0].length() == 0 ) return false;
+		if(!estInt(tab[3])) return false;
+		if(!estInt(tab[5])) return false;
+		return true;
+	}
+	
+	public static boolean estInt(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    } catch(NullPointerException e) {
+	        return false;
+	    }
+	    return true;
 	}
 }

@@ -17,13 +17,23 @@ public class gestion {
 		}catch(Exception e){ e.printStackTrace();}
 	}
 	
+	public gestion(int port, int maxDiff){
+		try{
+			this.port = port;
+			this.maxDiff = maxDiff;
+			server = new ServerSocket(port);
+			System.out.println("Serveur Gestionnaire créé");
+			bottin = new annuaire(maxDiff);
+		}catch(Exception e){ e.printStackTrace();}
+	}
+	
 	public void serviceGestion(){
 		try{
 			
 			threadTest test = new threadTest(bottin);
 			Thread threadTest = new Thread(test);
 			threadTest.start();
-			//thread test
+		
 		while(true){
 			Socket serv = server.accept();
 			System.out.println("Connection établie avec l'addresse "+serv.getInetAddress());
