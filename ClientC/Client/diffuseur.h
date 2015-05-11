@@ -21,6 +21,7 @@
 #include <pthread.h>
 #include "menu.h"
 #include "saisie.h"
+#include "diffuseur.h"
 
 typedef struct diffuseur{
     char id[9];
@@ -28,6 +29,7 @@ typedef struct diffuseur{
     char port1[5];
     char ip2[16];
     char port2[5];
+    int sockUDP;
 }diffuseur;
 
 typedef struct liste_dif{
@@ -38,6 +40,7 @@ typedef struct liste_dif{
 liste_dif * make_list(diffuseur *);
 diffuseur * make_diff(char * ,char *,char *,char *, char * );
 void add_diff(liste_dif *,diffuseur *);
+void print_liste(liste_dif *);
 void clear_liste(liste_dif *);
 int verif_ip(char * );
 int verif_port(char *);

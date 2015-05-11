@@ -18,6 +18,7 @@ diffuseur * make_diff(char * id,char * port1,char * ip1,char * port2, char * ip2
     snprintf(diff->port2, 5, "%s",port2);
     snprintf(diff->ip1,16,"%s",ip1);
     snprintf(diff->ip2,16,"%s",ip2);
+    diff->sockUDP = -1;
     return diff;
 }
 
@@ -31,6 +32,7 @@ void add_diff(liste_dif * liste,diffuseur * diff){
     }
     while(lt->suivant!=NULL)lt=lt->suivant;
     lt->suivant=make_list(diff);
+    print_liste(liste);
     pthread_mutex_unlock(&verrou);
 }
 
@@ -55,6 +57,19 @@ void clear_liste(liste_dif * liste){
     liste=NULL;
 }
 
+void print_liste(liste_dif * liste){
+    liste_dif * lst = liste;
+    printf("Liste des Diffuseurs : \n\n");
+    while (lst!=NULL) {
+        printf("ID : %s\n",lst->diff->id);
+        printf("Ip 1 : %s\n",lst->diff->ip1);
+        printf("Port 1: %s\n",lst->diff->port1);
+        printf("Ip 2 : %s\n",lst->diff->ip2);
+        printf("Port 2 : %s\n",lst->diff->port2);
+        lst = lst -> suivant;
+    }
+}
+
 int verif_ip(char * ip){
     int i,ok=1;
     for(i=0;i<15;i++){
@@ -69,6 +84,25 @@ int verif_port(char * port){
     return  a>0 && a<9999;
 }
 
+int init_sockUDP(diffuseur * diff){
+    int sock=socket(PF_INET,SOCK_DGRAM,0);
+    sock=socket(PF_INET,SOCK_DGRAM,0);
+    int ok=1;
+    int r=setsockopt(sock,SOL_SOCKET,SO_REUSEPORT,&ok,sizeof(ok));
+    struct sockaddr_in address_sock;
+    address_sock.sin_family=AF_INET;
+    address_sock.sin_port=htons(atoi(diff->port1));
+    address_sock.sin_addr.s_addr=htonl(INADDR_ANY);
+    r=bind(sock,(struct sockaddr *)&address_sock,sizeof(struct sockaddr_in));
+    struct ip_mreq mreq;
+    mreq.imr_multiaddr.s_addr=inet_addr(diff->ip1);
+    mreq.imr_interface.s_addr=htonl(INADDR_ANY);
+    r=setsockopt(sock,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq));
+    if (r!=-1) diff->sockUDP=sock;
+    return r!=-1;
+}
+
+
 int genere_diff(int sock,int nb){
     long lus;
     int i;
@@ -81,8 +115,10 @@ int genere_diff(int sock,int nb){
         char port1[5];
         char ip2[16];
         char port2[5];
-        lus=recv(sock, buff, 56, 0);//4+1+8+1+4+1+15+1+4+15+2
-        if(lus!=56){
+        lus=recv(sock, buff, 57, 0);//4+1+8+1+15+1+4+1+15+1+4+2
+        //
+        printf("LUS : %lu -%s-\n",lus,buff);
+        if(lus!=57){
             print("Erreur de format -5-, fin de la connexion au gestionnaire.");
             return 0;
         }
@@ -137,5 +173,11 @@ void lecture_gestionnaire(int sock){
     }
     if (!genere_diff(sock, nb)){
         clear_liste(liste_tmp);
+    }else{
+        menu_diffuseurs(liste_tmp,nb);
+        //Lancer le menu de choix des diffuseur
+        //Dans le menu,
+        //Generer menu diffuseur
     }
+    
 }

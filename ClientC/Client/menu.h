@@ -11,10 +11,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "getch.h"
+#include "diffuseur.h"
 
 int menu_simple(char *, char * args[],int);
 int capture_select_simple(int,int);
+//int menu_diffuseurs(liste_dif *,int);
 
 
 
