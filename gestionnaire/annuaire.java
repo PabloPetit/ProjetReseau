@@ -1,9 +1,9 @@
-package pr6_projet;
+
 import java.util.*;
 
 public class annuaire {
 
-	private int max_diff = 100, taille = 0;
+	private int max_diff = 100, taille = 0; // .size()
 	private ArrayList<IDdiff> list;
 	
 	public annuaire(){
@@ -86,19 +86,5 @@ public class annuaire {
 			return list.get(0);
 		}
 		return null;
-	}
-		
-	public static void main(String[] args){
-		
-	/*	annuaire bottin = new annuaire(10);
-		System.out.println("annuaire créé");
-		IDdiff diffu = new IDdiff("hello","localhost",45,"localhost",5677);
-		bottin.add(diffu);
-		IDdiff diffu2 = new IDdiff("heo","192.168.0.1",45,"localhost",5677);
-		bottin.add(diffu2);
-		String[] temp = bottin.lister();
-		for(int i=0; i<temp.length;i++){
-			System.out.println(temp[i]);
-		}*/
 	}
 }

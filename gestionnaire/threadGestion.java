@@ -1,4 +1,4 @@
-package pr6_projet;
+
 import java.net.*;
 import java.io.*;
 
@@ -76,8 +76,9 @@ public class threadGestion implements Runnable {
 	public static boolean verifIns(String tab[]){
 		if(tab.length != 6 ) return false;
 		if(tab[1].length() > 8 || tab[0].length() == 0 ) return false;
-		if(!estInt(tab[3])) return false;
+		if(!estInt(tab[3])) return false;// test entre 0 et 9999
 		if(!estInt(tab[5])) return false;
+		//verif ip 15 char
 		return true;
 	}
 	

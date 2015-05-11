@@ -1,4 +1,3 @@
-package pr6_projet;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
