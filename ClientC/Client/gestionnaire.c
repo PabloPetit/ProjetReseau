@@ -29,7 +29,7 @@ int connexion(int port, char * ip){
     adress_sock.sin_port = htons(port);
     inet_aton(ip,&adress_sock.sin_addr);
     int descr=socket(PF_INET,SOCK_STREAM,0);
-    printf("\nConnexion en cours...\n");
+    printf("\nConnexion en cours...\n\n");
     int r=connect(descr,(struct sockaddr *)&adress_sock,sizeof(struct sockaddr_in));
     return (r==-1)?r:descr;
 }
