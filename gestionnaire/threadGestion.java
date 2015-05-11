@@ -47,7 +47,9 @@ public class threadGestion implements Runnable {
 				//requete lister les diffuseurs
 					}else if(req[0].equals("LIST")){
 						System.out.println("LIST -> envoi du nombre d'elements");
-						pw.print("LINB "+bottin.length()+"\r\n");
+						String lengthBottin = ""+bottin.length();
+						if (lengthBottin.length()<2) lengthBottin="0"+lengthBottin; 
+						pw.print("LINB "+lengthBottin+"\r\n");
 						pw.flush();
 						String[] listDiff = bottin.lister();
 						System.out.println("LIST -> envoi des elements");

@@ -114,9 +114,12 @@ void lecture_gestionnaire(int sock){
     buff[1024]='\0';
     type[4]='\0';
     
-    lus=recv(sock, buff, 7, 0);
-    printf("LUS : %lu",lus);
-    if(lus!=6){
+    send(sock, "LIST\r\n", 6, 0);
+    
+    lus=recv(sock, buff, 9, 0);
+    buff[lus]='\0';
+    printf("-%s-\n",buff);
+    if(lus!=9){
         print("Erreur de format -1-, fin de la connexion au gestionnaire.");
         return;
     }
