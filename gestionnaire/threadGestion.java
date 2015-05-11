@@ -33,8 +33,8 @@ public class threadGestion implements Runnable {
 						if(verifIns(req)){
 							diffuseur = new IDdiff(req, service);
 							if(bottin.add(diffuseur)){
-								pw.print("REOK\r\n");
-								pw.flush();
+								diffuseur.send("REOK\r\n");
+								//pw.flush();
 								System.out.println("REGI -> Le diffuseur : "+diffuseur.toString()+" enregistre");
 							}
 						}else{
@@ -47,9 +47,7 @@ public class threadGestion implements Runnable {
 				//requete lister les diffuseurs
 					}else if(req[0].equals("LIST")){
 						System.out.println("LIST -> envoi du nombre d'elements");
-						String lengthBottin = ""+bottin.length();
-						if (lengthBottin.length()<2) lengthBottin="0"+lengthBottin; 
-						pw.print("LINB "+lengthBottin+"\r\n");
+						pw.print("LINB "+bottin.length()+"\r\n");
 						pw.flush();
 						String[] listDiff = bottin.lister();
 						System.out.println("LIST -> envoi des elements");
@@ -78,20 +76,21 @@ public class threadGestion implements Runnable {
 	public static boolean verifIns(String tab[]){
 		if(tab.length != 6 ) return false;
 		if(tab[1].length() > 8 || tab[0].length() == 0 ) return false;
-		if(!estInt(tab[3])) return false;// test entre 0 et 9999
-		if(!estInt(tab[5])) return false;
-		//verif ip 15 char
+		if(!estPort(tab[3]) || !estPort(tab[5])) return false;// test si les ports sont compris entre 0 et 9999
+		if(tab[2].length() != 15 || tab[4].length() != 15 ) return false; //verifie si les ip font 15 char
 		return true;
 	}
 	
-	public static boolean estInt(String s) {
-	    try { 
-	        Integer.parseInt(s); 
+	public static boolean estPort(String s) {
+	    int port;
+		try { 
+	        port = Integer.parseInt(s); 
 	    } catch(NumberFormatException e) { 
 	        return false; 
 	    } catch(NullPointerException e) {
 	        return false;
 	    }
-	    return true;
+		if (port>=0 && port <= 9999) return true;
+		else return false;
 	}
 }

@@ -19,22 +19,23 @@ public class threadTest implements Runnable {
 		while(true){
 		
 			try {
+				TimeUnit.SECONDS.sleep(frequence);
 				if(bottin.length() > 0){
-					TimeUnit.SECONDS.sleep(frequence);
-					IDdiff test = bottin.getRandom();
-				
+					
+					//IDdiff test = bottin.getRandom();
+				for ( IDdiff test : bottin.getList()){
 					if(test!=null){
 						if(test.socket.isClosed()){
 							bottin.supp(test.ID);
 						}else{
 							//test.socket.setSoTimeout(10000);
 							//BufferedReader bf = new BufferedReader(new InputStreamReader(test.socket.getInputStream()));
-							PrintWriter pw = new PrintWriter(new OutputStreamWriter(test.socket.getOutputStream()));
+							//PrintWriter pw = new PrintWriter(new OutputStreamWriter(test.socket.getOutputStream()));
 					
 							System.out.println("Test du diffuseur "+test.ID);
 			
-							pw.print("RUOK\r\n");
-							pw.flush();
+							test.send("RUOK\r\n");
+							//pw.flush();
 							
 							try{
 							//rep = bf.readLine();
@@ -58,13 +59,13 @@ public class threadTest implements Runnable {
 						
 						}
 					}	
-				}			
+				}	}		
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("timeout");
 			}
 			
-			
-		}
+			}	
+		
 	}
 }

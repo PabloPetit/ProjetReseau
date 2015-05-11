@@ -1,4 +1,5 @@
 
+import java.io.*;
 import java.net.*;
 
 public class IDdiff {
@@ -6,6 +7,8 @@ public class IDdiff {
 	int port1, port2;
 	Socket socket;
 	private boolean testing = false;
+	private PrintWriter pw;
+	//private BufferedReader bf;
 	
 	public IDdiff(String ID, String ip1, int port1, String ip2, int port2, Socket socket){
 		
@@ -16,6 +19,14 @@ public class IDdiff {
 		this.ip2 = ip2;
 		this.port2 = port2;
 		this.socket = socket;
+		try {
+		//	bf = new BufferedReader(new InputStreamReader( socket.getInputStream()));
+			pw = new PrintWriter(new OutputStreamWriter( socket.getOutputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public IDdiff(String [] tab, Socket socket){
@@ -27,6 +38,13 @@ public class IDdiff {
 		this.ip2 = tab[4];
 		this.port2 = Integer.parseInt(tab[5]);
 		this.socket = socket;
+		try {
+			//bf = new BufferedReader(new InputStreamReader( socket.getInputStream()));
+			pw = new PrintWriter(new OutputStreamWriter( socket.getOutputStream()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public String toString(){
@@ -46,4 +64,19 @@ public class IDdiff {
 	public synchronized boolean getTest(){
 		return testing;
 	}
+	
+	public void send(String s){
+		pw.print(s);
+		pw.flush();
+	}
+	
+/*	public String read(){
+		String s = null;
+		try {
+			s = bf.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return s; 
+	}*/
 }

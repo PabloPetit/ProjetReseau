@@ -54,14 +54,14 @@ public class annuaire {
 		try{
 			//wait();
 		}catch(Exception e){e.printStackTrace();}
-		return taille;
+		return list.size();
 	}
 	
 	public synchronized String[] lister(){
 		try{
 			//wait();
 		}catch(Exception e){e.printStackTrace();}
-		String listDiff[] = new String[taille];
+		String listDiff[] = new String[list.size()];
 		int i=0;
 		Iterator<IDdiff> it = list.iterator();
 		while(it.hasNext()){
@@ -69,6 +69,13 @@ public class annuaire {
 			i++;
 		}
 		return listDiff;
+	}
+	
+	public ArrayList<IDdiff> getList(){
+		ArrayList<IDdiff> clone = new ArrayList<IDdiff>();
+		for( IDdiff diff : list) 
+			clone.add(diff);		
+		return clone;
 	}
 	
 	public synchronized IDdiff getRandom(){
