@@ -31,9 +31,9 @@ public class threadGestion implements Runnable {
 				//requete inscription
 					if(req[0].equals("REGI")){
 						if(verifIns(req)){
-							diffuseur = new IDdiff(req, service);
+							diffuseur = new IDdiff(req, service,pw);
 							if(bottin.add(diffuseur)){
-								diffuseur.send("REOK\r\n");
+								pw.print("REOK\r\n");
 								//pw.flush();
 								System.out.println("REGI -> Le diffuseur : "+diffuseur.toString()+" enregistre");
 							}
@@ -47,16 +47,18 @@ public class threadGestion implements Runnable {
 				//requete lister les diffuseurs
 					}else if(req[0].equals("LIST")){
 						System.out.println("LIST -> envoi du nombre d'elements");
-						pw.print("LINB "+bottin.length()+"\r\n");
+						if (bottin.length() < 10){
+							pw.print("LINB 0"+bottin.length()+"\r\n");
+						}else{ 
+							pw.print("LINB "+bottin.length()+"\r\n");
+							}
 						pw.flush();
 						String[] listDiff = bottin.lister();
 						System.out.println("LIST -> envoi des elements");
-						for(int i=0; i<listDiff.length; i++){
-							pw.print("ITEM "+listDiff[i]+"\r\n");
+						for(String Diff : listDiff){
+							pw.print("ITEM "+Diff+"\r\n");
 							pw.flush();
 						}
-						//service.close();
-						//break;
 					}
 					//requete test
 					else if(req[0].equals("IMOK")){
@@ -73,6 +75,7 @@ public class threadGestion implements Runnable {
 				e.printStackTrace();
 			}
 	}
+		
 	public static boolean verifIns(String tab[]){
 		if(tab.length != 6 ) return false;
 		if(tab[1].length() > 8 || tab[0].length() == 0 ) return false;

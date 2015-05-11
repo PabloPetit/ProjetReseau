@@ -10,7 +10,7 @@ public class IDdiff {
 	private PrintWriter pw;
 	//private BufferedReader bf;
 	
-	public IDdiff(String ID, String ip1, int port1, String ip2, int port2, Socket socket){
+	public IDdiff(String ID, String ip1, int port1, String ip2, int port2, Socket socket, PrintWriter pw){
 		
 		if(ID.length() == 8){this.ID = ID;}
 		else{ while(ID.length()<8) ID+='#';}
@@ -19,17 +19,11 @@ public class IDdiff {
 		this.ip2 = ip2;
 		this.port2 = port2;
 		this.socket = socket;
-		try {
-		//	bf = new BufferedReader(new InputStreamReader( socket.getInputStream()));
-			pw = new PrintWriter(new OutputStreamWriter( socket.getOutputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.pw = pw;
 		
 	}
 	
-	public IDdiff(String [] tab, Socket socket){
+	public IDdiff(String [] tab, Socket socket, PrintWriter pw){
 		this.ID = tab[1];//on commence a 1 car tab[0] = "REGI"
 		if(this.ID.length() == 8){this.ID = ID;}
 		else{ while(ID.length()<8) ID+='#';}
@@ -38,13 +32,7 @@ public class IDdiff {
 		this.ip2 = tab[4];
 		this.port2 = Integer.parseInt(tab[5]);
 		this.socket = socket;
-		try {
-			//bf = new BufferedReader(new InputStreamReader( socket.getInputStream()));
-			pw = new PrintWriter(new OutputStreamWriter( socket.getOutputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.pw = pw;
 	}
 	
 	public String toString(){
