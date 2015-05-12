@@ -25,6 +25,8 @@ diffuseur * make_diff(char * id,char * port1,char * ip1,char * port2, char * ip2
 void add_diff(liste_dif * liste,diffuseur * diff){
     pthread_mutex_lock(&verrou);
     liste_dif * lt = liste;
+    printf("DEB\n");
+    print_liste(liste);
     if(lt==NULL || lt==0){
         liste=make_list(diff);
         pthread_mutex_unlock(&verrou);
@@ -32,6 +34,7 @@ void add_diff(liste_dif * liste,diffuseur * diff){
     }
     while(lt->suivant!=NULL)lt=lt->suivant;
     lt->suivant=make_list(diff);
+    printf("FIN\n");
     print_liste(liste);
     pthread_mutex_unlock(&verrou);
 }
