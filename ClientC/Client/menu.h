@@ -16,8 +16,8 @@
 #include "diffuseur.h"
 
 int menu_simple(char *, char * args[],int);
-int capture_select_simple(int,int);
-//int menu_diffuseurs(liste_dif *,int);
+int capture_select_simple(int);
+liste_dif ** menu_diffuseurs(liste_dif *,int);
 
 
 

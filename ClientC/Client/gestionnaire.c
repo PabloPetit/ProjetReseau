@@ -47,5 +47,6 @@ void connexion_gestionnaire(){
     printf("Connexion Réussi\n");
     fflush(stdout);
     lecture_gestionnaire(sock);
+    printf("SOCK close");
     close(sock);
 }

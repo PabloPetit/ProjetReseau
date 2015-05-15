@@ -19,9 +19,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <pthread.h>
-#include "menu.h"
 #include "saisie.h"
-#include "diffuseur.h"
 
 typedef struct diffuseur{
     char id[9];
@@ -37,13 +35,18 @@ typedef struct liste_dif{
     diffuseur * diff;
 }liste_dif;
 
+#include "menu.h"
+
 liste_dif * make_list(diffuseur *);
 diffuseur * make_diff(char * ,char *,char *,char *, char * );
-void add_diff(liste_dif *,diffuseur *);
+void add_diff(liste_dif **,diffuseur *);
 void print_liste(liste_dif *);
-void clear_liste(liste_dif *);
+void clear_liste(liste_dif **);
 int verif_ip(char * );
 int verif_port(char *);
 int genere_diff(int,int);
+void transfert_liste(liste_dif *, liste_dif **);
 void lecture_gestionnaire(int);
+int init_sockUDP(diffuseur *);
+int connect_liste_diff(liste_dif *);
 #endif /* defined(__Client__diffuseur__) */

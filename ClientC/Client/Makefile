@@ -1,6 +1,6 @@
 SOURCES=main.c menu.c getch.c menu_principal.c saisie.c gestionnaire.c diffuseur.c
 OBJECTS =$(SOURCES:.c=.o)
-CFLAGS= -std=c99 -std=gnu99 -Wall -g -pedantic -pthread
+CFLAGS= -std=c99 -std=gnu99 -Wall -g  -pthread
 EXECUTABLE=main
 
 $(EXECUTABLE): $(OBJECTS)

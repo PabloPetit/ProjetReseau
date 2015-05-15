@@ -1,7 +1,7 @@
 #include "diffuseur.h"
 
-liste_dif * liste;
-liste_dif * liste_tmp;
+liste_dif * liste=NULL;
+liste_dif * liste_tmp=NULL;
 pthread_mutex_t verrou= PTHREAD_MUTEX_INITIALIZER;
 
 liste_dif * make_list(diffuseur * diff){
@@ -22,42 +22,39 @@ diffuseur * make_diff(char * id,char * port1,char * ip1,char * port2, char * ip2
     return diff;
 }
 
-void add_diff(liste_dif * liste,diffuseur * diff){
+void add_diff(liste_dif ** liste,diffuseur * diff){
     pthread_mutex_lock(&verrou);
-    liste_dif * lt = liste;
-    printf("DEB\n");
-    print_liste(liste);
-    if(lt==NULL || lt==0){
-        liste=make_list(diff);
+    liste_dif * lt = *liste;
+    if(lt==NULL || lt==0 ){//Passe toujours par ici
+        *liste = make_list(diff);//faut
         pthread_mutex_unlock(&verrou);
         return;
     }
     while(lt->suivant!=NULL)lt=lt->suivant;
     lt->suivant=make_list(diff);
-    printf("FIN\n");
-    print_liste(liste);
     pthread_mutex_unlock(&verrou);
 }
 
-void clear_liste(liste_dif * liste){
+void clear_liste(liste_dif ** liste){
     pthread_mutex_lock(&verrou);
     liste_dif * next;
-    if(liste==NULL || liste==0){
+    if(*liste==NULL || *liste==0){
         pthread_mutex_unlock(&verrou);
         return;
     }
-    if(liste->diff==NULL){
-        free(liste);
+    if((*liste)->diff==NULL){
+        free(*liste);
+        pthread_mutex_unlock(&verrou);
         return;
     }
-    while( (next=liste->suivant)!=NULL){
-        free(liste->diff);
-        free(liste);
-        liste=next;
+    while ((*liste)->suivant!=NULL) {
+        next = (*liste)->suivant;
+        free((*liste)->diff);
+        free(*liste);
+        liste = &next;
     }
-    free(next->diff);
-    free(next);
-    liste=NULL;
+    *liste=NULL;
+    pthread_mutex_unlock(&verrou);
 }
 
 void print_liste(liste_dif * liste){
@@ -68,9 +65,10 @@ void print_liste(liste_dif * liste){
         printf("Ip 1 : %s\n",lst->diff->ip1);
         printf("Port 1: %s\n",lst->diff->port1);
         printf("Ip 2 : %s\n",lst->diff->ip2);
-        printf("Port 2 : %s\n",lst->diff->port2);
+        printf("Port 2 : %s\n\n",lst->diff->port2);
         lst = lst -> suivant;
     }
+    printf("Fin de la liste.\n\n");
 }
 
 int verif_ip(char * ip){
@@ -130,7 +128,7 @@ int genere_diff(int sock,int nb){
             print("Erreur de format -6-, fin de la connexion au gestionnaire.");
             return 0;
         }
-        snprintf(id,9,"%s",(buff+5));//des milliards de test a faire bien sur ...
+        snprintf(id,9,"%s",(buff+5));
         snprintf(port1, 5, "%s",(buff+14));
         snprintf(ip1,16,"%s",(buff+19));
         snprintf(port2, 5, "%s",(buff+35));
@@ -139,9 +137,29 @@ int genere_diff(int sock,int nb){
             print("Erreur de format -7-, fin de la connexion au gestionnaire.");
             return 0;
         }
-        add_diff(liste_tmp, make_diff(id, port1, ip1, port2, ip2));
+        add_diff(&liste_tmp, make_diff(id, port1, ip1, port2, ip2));
     }
     return 1;
+}
+
+void transfert_liste(liste_dif * src, liste_dif ** cible){
+    while(src!=NULL){
+        add_diff(cible, src->diff);
+        src = src->suivant;
+    }
+}
+
+int connect_liste_diff(liste_dif * lst){
+    int res = 1;
+    while (lst!=NULL) {
+        if(init_sockUDP(lst->diff)==-1){
+            res = -1;
+            char ch[46];
+            snprintf(ch,46,"Connexion au diffuseur : %s impossible.",lst->diff->id);
+            print(ch);
+        }
+    }
+    return res;
 }
 
 
@@ -167,7 +185,7 @@ void lecture_gestionnaire(int sock){
         print("Erreur de format -2-, fin de la connexion au gestionnaire.");
         return;
     }
-    nb=atoi((buff+5));// a verif pour \r\n
+    nb=atoi((buff+5));
     printf("nb : %d\n",nb);
     
     if(nb<0 || nb>99){
@@ -175,12 +193,39 @@ void lecture_gestionnaire(int sock){
         return;
     }
     if (!genere_diff(sock, nb)){
-        clear_liste(liste_tmp);
-    }else{
-        menu_diffuseurs(liste_tmp,nb);
-        //Lancer le menu de choix des diffuseur
-        //Dans le menu,
-        //Generer menu diffuseur
+        clear_liste(&liste_tmp);
+        return;
     }
     
+    liste_dif ** selection = (menu_diffuseurs(liste_tmp,nb));
+    if(selection==NULL) return;
+    //print_liste(*selection);
+    
+   // connect_liste_diff(selection);
+    
+    transfert_liste(*selection, &liste);
+    printf("LISTRE\n");
+    print_liste(liste);
+    
+    clear_liste(&liste_tmp);
+    clear_liste(selection);
+    printf("FIN LISTE\n");
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
