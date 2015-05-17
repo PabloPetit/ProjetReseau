@@ -162,6 +162,100 @@ int connect_liste_diff(liste_dif * lst){
     return res;
 }
 
+int menu_action_diff(){
+    char * intro = "Choisissez une option : ";
+    char * args[4];
+    args[0]="Ajouter a la liste de lecture";
+    args[1]="Diffuser un message";
+    args[2]="Demander la liste des derniers messages";
+    args[3]="Quitter";
+    
+    return menu_simple(intro,args,4);
+}
+
+int send_msg(int port, char * addr, char * mess){
+    struct sockaddr_in adress_sock;
+    adress_sock.sin_family = AF_INET;
+    adress_sock.sin_port = htons(port);
+    inet_aton(addr,&adress_sock.sin_addr);
+    int descr=socket(PF_INET,SOCK_STREAM,0);
+    int r=connect(descr,(struct sockaddr *)&adress_sock,sizeof(struct sockaddr_in));
+    if(r!=-1){
+        send(descr,mess,strlen(mess),0);
+        close(descr);
+    }
+    return r!=-1;
+}
+
+void diffuser_message(liste_dif * lst){
+    char texte[141];
+    extern char id[9];
+    saisie(140, texte, "Entrez le message : ", ALPHANUMERIC);
+    char mess [157];
+    snprintf(mess, 157,"MESS %s %s\r\n",id,texte);
+    while(lst!=NULL){
+        if(!send_msg(atoi(lst->diff->port2), lst->diff->ip2, mess)){
+            char tmp[52];
+            snprintf(tmp,52,"Envoie du message au diffuseur %s impossible.",lst->diff->id);
+            print(tmp);
+        }
+        lst=lst->suivant;
+    }
+}
+
+int check_old_mess(char * buff){
+    int res=1,i;
+    res = !memcmp("OLDM",buff,4);
+    for(i=5;i<13;i++) res=isdigit(buff[i]);
+    return res;
+}
+
+void reception_old_mess(int sock,int nb){
+    char tmp[159];
+    long lus=-1;
+    int nb_recu = 0;
+    tmp[158]='\0';
+    while((lus=recv(sock, tmp, 159, 0))!=-1  && nb_recu<nb){
+        if(lus != 158){
+            print("Format errone, abandon.");
+            return;
+        }
+        if(!check_old_mess(tmp)){
+            print("Format errone, abandon.");
+            return;
+        }
+        printf("%s\n",tmp);
+        //Lecteur.print(tmp)
+        nb_recu++;
+    }
+}
+
+void display_old_mess(liste_dif * lst){
+    char tmp [4];
+    saisie(3, tmp,"Combien de message a recuperer ? : ", NUMERIC);
+    int nb = atoi (tmp);
+    
+    char oldMess[11];
+    snprintf(oldMess, 11, "LAST %s\r\n",tmp);
+    while(lst!=NULL){
+        struct sockaddr_in adress_sock;
+        adress_sock.sin_family = AF_INET;
+        adress_sock.sin_port = htons(atoi(lst->diff->port2));
+        inet_aton(lst->diff->ip2,&adress_sock.sin_addr);
+        int descr=socket(PF_INET,SOCK_STREAM,0);
+        int r=connect(descr,(struct sockaddr *)&adress_sock,sizeof(struct sockaddr_in));
+        if(r==-1){
+            char tmp[56];
+            snprintf(tmp,56,"Envoie de la demande au diffuseur %s impossible.",lst->diff->id);
+            print(tmp);
+        }
+        send(descr,oldMess,11,0);
+        reception_old_mess(descr,nb);
+        close(descr);
+        lst=lst->suivant;
+    }
+}
+
 
 void lecture_gestionnaire(int sock){
     long lus;
@@ -199,17 +293,30 @@ void lecture_gestionnaire(int sock){
     
     liste_dif ** selection = (menu_diffuseurs(liste_tmp,nb));
     if(selection==NULL) return;
-    //print_liste(*selection);
     
-   // connect_liste_diff(selection);
-    
-    transfert_liste(*selection, &liste);
-    printf("LISTRE\n");
-    print_liste(liste);
-    
+    liste_dif * lst=*selection;//Il la voulais pas dans le while
+    switch (menu_action_diff()) {
+        case 0:
+            while(lst!=NULL) {
+                init_sockUDP(lst->diff);
+                lst=lst->suivant;
+            }
+            transfert_liste(*selection, &liste);
+            break;
+        case 1:
+            diffuser_message(*selection);//pas tester
+            break;
+        case 2:
+            display_old_mess(*selection);//pas tester
+            break;
+        case 3:
+            return;
+            break;
+    }
+    /*bug
     clear_liste(&liste_tmp);
     clear_liste(selection);
-    printf("FIN LISTE\n");
+     */
     
 }
 

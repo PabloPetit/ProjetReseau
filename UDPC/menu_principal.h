@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include "menu.h"
 #include "main.h"
-#include "gestionnaire.h"
 
 int menu_principal();
 

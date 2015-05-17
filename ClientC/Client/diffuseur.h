@@ -49,4 +49,10 @@ void transfert_liste(liste_dif *, liste_dif **);
 void lecture_gestionnaire(int);
 int init_sockUDP(diffuseur *);
 int connect_liste_diff(liste_dif *);
+int menu_action_diff();
+int send_msg(int , char *, char *);
+void diffuser_message(liste_dif * );
+int check_old_mess(char *);
+void display_old_mess(liste_dif * lst);
+void reception_old_mess(int ,int);
 #endif /* defined(__Client__diffuseur__) */
