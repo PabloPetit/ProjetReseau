@@ -9,10 +9,12 @@ public class threadGestion implements Runnable {
 	PrintWriter pw;
 	int port = 5566;
 	annuaire bottin;
+	screen out;
 	
-	public threadGestion(Socket service, annuaire bottin){
+	public threadGestion(Socket service, annuaire bottin, screen out){
 		this.bottin = bottin;
 		this.service = service;
+		this.out = out;
 	}
 	
 	public void run(){
@@ -24,7 +26,7 @@ public class threadGestion implements Runnable {
 				IDdiff diffuseur = null;
 				while(true){
 					read = bf.readLine();
-					System.out.println("gestion lit -> "+read);
+					//out.print("gestion lit -> "+read);
 					if(read == null) break;
 					req = read.split(" ");
 				
@@ -35,18 +37,18 @@ public class threadGestion implements Runnable {
 							if(bottin.add(diffuseur)){
 								pw.print("REOK\r\n");
 								//pw.flush();
-								System.out.println("REGI -> Le diffuseur : "+diffuseur.toString()+" enregistre");
+								out.print("Le diffuseur : "+diffuseur.getId()+" est enregistré");
 							}
 						}else{
 							pw.print("RENO\r\n");
 							pw.flush();
-							System.out.println("REGI -> Impossible d'enregistrer le diffuseur");
+							out.print("REGI -> Impossible d'enregistrer le diffuseur");
 							//service.close();
 							break;
 					}
 				//requete lister les diffuseurs
 					}else if(req[0].equals("LIST")){
-						System.out.println("LIST -> envoi du nombre d'elements");
+						out.print("Envoi du nombre d'elements à l'adresse "+service.getInetAddress());
 						if (bottin.length() < 10){
 							pw.print("LINB 0"+bottin.length()+"\r\n");
 						}else{ 
@@ -54,7 +56,7 @@ public class threadGestion implements Runnable {
 							}
 						pw.flush();
 						String[] listDiff = bottin.lister();
-						System.out.println("LIST -> envoi des elements");
+						out.print("Envoi des elements  à l'adresse "+service.getInetAddress());
 						for(String Diff : listDiff){
 							pw.print("ITEM "+Diff+"\r\n");
 							pw.flush();
@@ -66,25 +68,75 @@ public class threadGestion implements Runnable {
 						diffuseur.setTestOK();
 					}
 					
+					else break;
+					
 				} 	bf.close(); pw.close(); service.close();
 			}
 			catch(SocketTimeoutException st){
-				System.out.println("timeout");
+				out.print("timeout");
 			}
 			catch(Exception e){
 				e.printStackTrace();
 			}
 	}
 		
-	public static boolean verifIns(String tab[]){
+	private boolean verifIns(String tab[]){
 		if(tab.length != 6 ) return false;
 		if(tab[1].length() > 8 || tab[0].length() == 0 ) return false;
 		if(!estPort(tab[3]) || !estPort(tab[5])) return false;// test si les ports sont compris entre 0 et 9999
-		if(tab[2].length() != 15 || tab[4].length() != 15 ) return false; //verifie si les ip font 15 char
+		if(!rescueIp(tab)) return false; //verifie si les ip font 15 char
 		return true;
 	}
 	
-	public static boolean estPort(String s) {
+	private boolean rescueIp(String tab[]){
+		
+		String [] tmp;
+		
+		if(tab[2].length()<15){
+			tmp = tab[2].split("\\.");
+			if(tmp.length < 4){ 
+				out.print("ip1 non valide");
+				return false;
+			}else{
+				out.print("Correction de ip1");
+				for(int i=0; i<4; i++){
+					switch (tmp[i].length()){
+					case 1 : 
+						tmp[i] = "00"+tmp[i];
+						break;
+					case 2 :
+						tmp[i] = "0"+ tmp[i];
+						break;
+					}
+				}
+				tab[2] = tmp[0]+"."+tmp[1]+"."+tmp[2]+"."+tmp[3];
+			}
+		}if(tab[4].length()<15){
+			tmp = tab[4].split("\\.");
+			if(tmp.length < 4){ 
+				out.print("ip2 non valide");
+				return false;
+			}else{
+				out.print("Correction de ip2");
+				for(int i=0; i<4; i++){
+					switch (tmp[i].length()){
+					case 1 : 
+						tmp[i] = "00"+tmp[i];
+						break;
+					case 2 :
+						tmp[i] = "0"+ tmp[i];
+						break;
+					}
+				}
+				tab[4] = tmp[0]+"."+tmp[1]+"."+tmp[2]+"."+tmp[3];		
+		}
+			return true;
+	}
+		return true;
+}
+	
+
+	private static boolean estPort(String s) {
 	    int port;
 		try { 
 	        port = Integer.parseInt(s); 

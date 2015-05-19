@@ -23,30 +23,23 @@ public class gestion {
 			this.port = port;
 			this.maxDiff = maxDiff;
 			server = new ServerSocket(port);
-			clear();
+			Runtime.getRuntime().exec("clear");
 			System.out.println("Serveur Gestionnaire créé sur le port "+port);
 			bottin = new annuaire(maxDiff);
 		}catch(Exception e){ e.printStackTrace();}
 	}
 	
-	public static void clear(){
-		final String ESC = "\033[";
-		System.out.print (ESC + "2J");
-		System.out.print (ESC + "0;0H");
-		System.out.flush();
-	}
-	
 	public void serviceGestion(){
 		try{
-			screen out = new screen(25,60, bottin);
-			threadTest test = new threadTest(bottin, out);
+			
+			threadTest test = new threadTest(bottin);
 			Thread threadTest = new Thread(test);
 			threadTest.start();
 		
 		while(true){
 			Socket serv = server.accept();
-			out.print("Connection établie avec l'addresse "+serv.getInetAddress());
-			threadGestion ges = new threadGestion(serv,bottin, out);
+			System.out.println("Connection établie avec l'addresse "+serv.getInetAddress());
+			threadGestion ges = new threadGestion(serv,bottin);
 			Thread threadGes = new Thread(ges);
 			threadGes.start();
 		}
@@ -58,7 +51,7 @@ public class gestion {
 	}
 	
 	public static void main(String[] args){
-		clear();
+		
 		Scanner scan = new Scanner(System.in);
 		int port , max =-1;
 		

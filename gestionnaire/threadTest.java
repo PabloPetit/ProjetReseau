@@ -8,10 +8,13 @@ import java.util.concurrent.TimeUnit;
 public class threadTest implements Runnable {
 	
 	annuaire bottin;
+	screen out;
 	int frequence = 20;
 	
-	public threadTest(annuaire bottin){
+	
+	public threadTest(annuaire bottin, screen out){
 		this.bottin = bottin;
+		this.out = out;
 	}
 	
 	public void run(){
@@ -32,7 +35,7 @@ public class threadTest implements Runnable {
 							//BufferedReader bf = new BufferedReader(new InputStreamReader(test.socket.getInputStream()));
 							//PrintWriter pw = new PrintWriter(new OutputStreamWriter(test.socket.getOutputStream()));
 					
-							System.out.println("Test du diffuseur "+test.ID);
+							out.print("Test du diffuseur "+test.ID);
 			
 							test.send("RUOK\r\n");
 							//pw.flush();
@@ -42,16 +45,16 @@ public class threadTest implements Runnable {
 						//	System.out.println("rep -> "+rep);
 								TimeUnit.SECONDS.sleep(3);	
 							if(test.getTest()){
-								System.out.println("Diffuseur "+test.ID+" est OK");
+								out.print("Diffuseur "+test.ID+" est OK");
 								test.resetTest();
 							}else{
-								System.out.println("Supression de l'annuaire du diffuseur "+test.ID);
+								out.print("Supression de l'annuaire du diffuseur "+test.ID);
 								bottin.supp(test);
 							}
 							}catch(Exception e){
 								//e.printStackTrace();
-								System.out.println("Le diffuseur "+test.ID+" ne repond pas");
-								System.out.println("Supression de l'annuaire du diffuseur "+test.ID);
+								out.print("Le diffuseur "+test.ID+" ne repond pas");
+								out.print("Supression de l'annuaire du diffuseur "+test.ID);
 								//bottin.supp(test.ID);
 								bottin.supp(test);
 							}
@@ -62,7 +65,7 @@ public class threadTest implements Runnable {
 				}	}		
 			} catch (Exception e) {
 				e.printStackTrace();
-				System.out.println("timeout");
+				out.print("timeout");
 			}
 			
 			}	

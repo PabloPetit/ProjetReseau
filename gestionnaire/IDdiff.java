@@ -58,6 +58,12 @@ public class IDdiff {
 		pw.flush();
 	}
 	
+	public String getId(){
+		return ID;
+	}
+
+
+	
 /*	public String read(){
 		String s = null;
 		try {
