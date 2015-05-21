@@ -10,12 +10,16 @@ public class screen {
 	private annuaire bottin;
 	private String colonne1 = "Events";
 	private String colonne2 = "Diffuseur(s)";
+	private String ip;
+	private int port;
 	
-	public screen(int ligneMax, int charMax, annuaire bottin){
+	public screen(int ligneMax, int charMax, annuaire bottin, String ip, int port){
 		this.events = new ArrayList<String>();
 		this.ligneMax = ligneMax;
 		this.charMax = charMax;
 		this.bottin = bottin;
+		this.ip = ip;
+		this.port = port;
 	}
 	
 	public String[] cutR(String s){
@@ -114,6 +118,8 @@ public class screen {
 		//├  ─  ┤ │ ┼ ┐ └ ┴ ┬ ┘ ┌
 		clear();
 		
+		System.out.println("Gestionnaire  ip : "+ip+"  port : "+port);
+		
 		cadre(0);
 		cadre(1);
 		cadre(3);
@@ -140,7 +146,7 @@ public class screen {
 	
 	}
 	
-	
+/*	
 	public static void main(String [] args){
 	annuaire bottin = new annuaire();
 		screen cons =  new screen(30, 100, bottin);
@@ -151,6 +157,6 @@ public class screen {
 		
 		
 		
-	}
+	}*/
 	
 }

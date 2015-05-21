@@ -1,8 +1,4 @@
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.concurrent.TimeUnit;
 
 public class threadTest implements Runnable {
@@ -29,33 +25,26 @@ public class threadTest implements Runnable {
 				for ( IDdiff test : bottin.getList()){
 					if(test!=null){
 						if(test.socket.isClosed()){
-							bottin.supp(test.ID);
+							bottin.supp(test.getId());
 						}else{
-							//test.socket.setSoTimeout(10000);
-							//BufferedReader bf = new BufferedReader(new InputStreamReader(test.socket.getInputStream()));
-							//PrintWriter pw = new PrintWriter(new OutputStreamWriter(test.socket.getOutputStream()));
-					
-							out.print("Test du diffuseur "+test.ID);
-			
+							out.print("Test du diffuseur "+test.getId());
 							test.send("RUOK\r\n");
-							//pw.flush();
 							
 							try{
-							//rep = bf.readLine();
-						//	System.out.println("rep -> "+rep);
 								TimeUnit.SECONDS.sleep(3);	
 							if(test.getTest()){
-								out.print("Diffuseur "+test.ID+" est OK");
+								out.print("Diffuseur "+test.getId()+" est OK");
 								test.resetTest();
 							}else{
-								out.print("Supression de l'annuaire du diffuseur "+test.ID);
-								bottin.supp(test);
+								out.print("Supression de l'annuaire du diffuseur "+test.getId());
+								if (bottin.supp(test)) out.print(test.getId()+" supprimé");
+								
 							}
 							}catch(Exception e){
 								//e.printStackTrace();
-								out.print("Le diffuseur "+test.ID+" ne repond pas");
-								out.print("Supression de l'annuaire du diffuseur "+test.ID);
-								//bottin.supp(test.ID);
+								out.print("Le diffuseur "+test.getId()+" ne repond pas");
+								out.print("Supression de l'annuaire du diffuseur "+test.getId());
+								//bottin.supp(test.getId());
 								bottin.supp(test);
 							}
 							//System.out.println("rep -> "+rep);

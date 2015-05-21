@@ -38,11 +38,16 @@ public class threadGestion implements Runnable {
 								pw.print("REOK\r\n");
 								//pw.flush();
 								out.print("Le diffuseur : "+diffuseur.getId()+" est enregistré");
+							}else{
+								pw.print("RENO\r\n");
+								pw.flush();
+								out.print("Erreur le diffuseur "+req[1]+" est déjà enregistré");
+								break;
 							}
 						}else{
 							pw.print("RENO\r\n");
 							pw.flush();
-							out.print("REGI -> Impossible d'enregistrer le diffuseur");
+							out.print("Impossible d'enregistrer le diffuseur "+req[1]);
 							//service.close();
 							break;
 					}
@@ -95,11 +100,15 @@ public class threadGestion implements Runnable {
 		if(tab[2].length()<15){
 			tmp = tab[2].split("\\.");
 			if(tmp.length < 4){ 
-				out.print("ip1 non valide");
+				out.print("Diffuseur "+tab[1] +" ip1 non valide");
 				return false;
 			}else{
-				out.print("Correction de ip1");
+				out.print("Diffuseur "+tab[1] +" correction de ip1");
 				for(int i=0; i<4; i++){
+					if(Integer.parseInt(tmp[i])>256){
+						out.print("Diffuseur "+tab[1] +" erreur ip1");
+						return false;
+					}
 					switch (tmp[i].length()){
 					case 1 : 
 						tmp[i] = "00"+tmp[i];
@@ -114,11 +123,15 @@ public class threadGestion implements Runnable {
 		}if(tab[4].length()<15){
 			tmp = tab[4].split("\\.");
 			if(tmp.length < 4){ 
-				out.print("ip2 non valide");
+				out.print("Diffuseur "+tab[1] +" ip2 non valide");
 				return false;
 			}else{
-				out.print("Correction de ip2");
+				out.print("Diffuseur "+tab[1] +" correction de ip2");
 				for(int i=0; i<4; i++){
+					if(Integer.parseInt(tmp[i])>256){
+						out.print("Diffuseur "+tab[1] +" erreur ip2 "+tab[4]);
+						return false;
+					}
 					switch (tmp[i].length()){
 					case 1 : 
 						tmp[i] = "00"+tmp[i];

@@ -3,7 +3,7 @@ import java.util.*;
 
 public class annuaire {
 
-	private int max_diff = 100, taille = 0; // .size()
+	private int max_diff = 100; // .size()
 	private ArrayList<IDdiff> list;
 	
 	public annuaire(){
@@ -12,14 +12,21 @@ public class annuaire {
 	
 	public annuaire(int max){
 		max_diff = max;
-		taille = 0;
 		list = new ArrayList<IDdiff>();
 	}
 	
+	private boolean containsDiff(IDdiff diff){
+		for(IDdiff diffreg : list){
+			if(diff.toString().equals(diffreg.toString()))
+				return true;
+		}
+		return false;
+	}
+	
 	public synchronized boolean add(IDdiff diff){
-		if(taille<max_diff){
+		if(list.size()<max_diff){
+			if (containsDiff(diff)) return false;
 			list.add(diff);
-			taille++;
 			notifyAll();
 			return true;
 		}
@@ -36,9 +43,8 @@ public class annuaire {
 		IDdiff tmp;
 		while(it.hasNext()){
 			tmp = it.next();
-			if(ID.equals(tmp.ID)){
+			if(ID.equals(tmp.getId())){
 				list.remove(tmp);
-				taille--;
 				return true;
 			}
 		}
@@ -46,7 +52,6 @@ public class annuaire {
 	}
 	
 	public synchronized boolean supp(IDdiff diff){
-		taille--;
 		return list.remove(diff);
 	}
 	
@@ -79,17 +84,17 @@ public class annuaire {
 	}
 	
 	public synchronized IDdiff getRandom(){
-		if(taille>1){
+		if(list.size()>1){
 			IDdiff tmp = null;
 			Iterator<IDdiff> it = list.iterator();
 			Random rand = new Random();
-			int r = rand.nextInt(taille +1);
+			int r = rand.nextInt(list.size() +1);
 			for(int i=0; i<r; i++){
 				tmp = it.next();
 			}
 			
 			return tmp;
-		}else if (taille > 0){
+		}else if (list.size() > 0){
 			return list.get(0);
 		}
 		return null;

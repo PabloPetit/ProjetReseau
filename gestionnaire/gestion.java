@@ -38,7 +38,11 @@ public class gestion {
 	
 	public void serviceGestion(){
 		try{
-			screen out = new screen(25,60, bottin);
+			InetAddress address = InetAddress.getLocalHost(); 
+		    String ip = address.getHostAddress() ;
+		   // String hostName = address.getHostName(); 
+			screen out = new screen(25,60, bottin, ip, port);
+			out.print("Serveur Gestionnaire créé sur le port "+port);
 			threadTest test = new threadTest(bottin, out);
 			Thread threadTest = new Thread(test);
 			threadTest.start();
@@ -86,10 +90,12 @@ public class gestion {
 				scan.next();
 				max =-1;
 			}
+			clear();
 		}while((max<0) || (max>99));
 		
 		
 		scan.close();
+		
 		gestion ges = new gestion(port, max);
 		ges.serviceGestion();
 	}
