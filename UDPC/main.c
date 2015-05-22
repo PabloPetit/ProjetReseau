@@ -16,6 +16,7 @@ int check_id_valide(char* id){
     return (strlen(id)<9 && strlen(id)>0);
 }
 
+//verification port
 void check_port_valide(char* port_multi,char* port_tcp){
     int portR,portM;
     portR=atoi(port_tcp);
@@ -29,7 +30,7 @@ void check_port_valide(char* port_multi,char* port_tcp){
         exit(1);
     }
 }
-
+//affiche les infos finales
 void print_param_final(char * id,char * portR,char * portM, char * ipv4){
     printf("\nLes parametre entrés sont : \n\n");
     printf("Identifiant : %s\n",id);
@@ -48,6 +49,7 @@ int strfd(char * src, char c){
     return i;
 }
 
+//verification syntaxe ip
 char* format_number_ipv4(int number){
     if(number < 0 || number > 255){
         printf("Format IPv4 incorrect.\n");
@@ -98,9 +100,9 @@ int main(int argc, char * argv[]){
     extern liste_msg * lt_df;
     
     int i,d,f;
-    char *ipv4,*id,*port_multi,*port_tcp,*path;
-    ipv4=NULL;id=NULL;port_multi=NULL;port_tcp=NULL;path=NULL;
-    i=0,d=0,f=0;
+    char *ipv4, *id, *port_multi, *port_tcp, *path;
+    ipv4=NULL; id=NULL; port_multi=NULL; port_tcp=NULL; path=NULL;
+    i=0, d=0, f=0;
     ipv4=malloc(sizeof(char)*(strlen(argv[i])+1));
     ipv4[strlen(argv[i])]='\0';
     port_tcp = malloc(sizeof(char)*5);
@@ -108,6 +110,7 @@ int main(int argc, char * argv[]){
     port_tcp[4]='\0';
     port_multi[4]='\0';
     
+    //traitement des arguments
     for(int i=1;i<argc;i++){
         if(strcmp("-id",argv[i])==0){
             if(++i<argc && check_id_valide(argv[i])){
@@ -162,7 +165,7 @@ int main(int argc, char * argv[]){
     if(argc<9 && !d){
         printf("Il manque des arguments, -h ou -help\n");// marche pas, mettre un int pour chaque param
         exit(0);
-    }else if(d){
+    }else if(d){//parametre par defaut
         id="Radio";
         port_tcp="4242";
         port_multi="4272";
@@ -181,6 +184,7 @@ int main(int argc, char * argv[]){
     
     
     if(path!=NULL && f){
+
         charger_fichier(path);
     }
     
@@ -191,7 +195,9 @@ int main(int argc, char * argv[]){
     
     pthread_create(&thread_tcp,NULL,run_server_tcp,NULL);
     pthread_create(&thread_dif,NULL,diffuseur_run,NULL);
-    
+    menu_principal();
+
+    exit(0);
     pthread_join(thread_tcp,NULL);
     pthread_join(thread_dif,NULL);
     

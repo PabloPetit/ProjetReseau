@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include "menu.h"
 #include "main.h"
+#include "messages.h"
+#include "diffuseur.h"
+#include "saisie.h"
 
 int menu_principal();
 

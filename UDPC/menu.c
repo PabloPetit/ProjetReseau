@@ -24,7 +24,7 @@ int capture_select_simple(int i){// BAS = 0 ; HAUT = 1 ; ENTER = -1 ; ELSE = -2
     return -2;
 }
 
-
+/*
 liste_dif ** menu_diffuseurs(liste_dif * lst,int nb){//La liste tmp
     int selected,ok,i;
     selected=0,ok=0,i=0;
@@ -92,7 +92,7 @@ liste_dif ** menu_diffuseurs(liste_dif * lst,int nb){//La liste tmp
             selected = (selected-1>=0)?selected-1:selected;
         }
         
-    }
+    }/*
     liste_dif ** retour = malloc(sizeof(liste_dif*));
     for(i=0;i<nb;i++){
         if (tab_select[i]){
@@ -101,7 +101,7 @@ liste_dif ** menu_diffuseurs(liste_dif * lst,int nb){//La liste tmp
     }
     
     return retour;
-}
+}*/
 
 int menu_simple(char * intro, char * args[],int length){
     int selected,ok,i;

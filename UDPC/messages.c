@@ -120,24 +120,26 @@ message * transfert(){
 void charger_fichier(char * path){
     int fic,i;
     long lus;
+    printf("%s\n",path );
     extern diffuseur * diff;
     char * buff = malloc(sizeof(char)*1025);
     buff[1024]='\0';
     
     if((fic=open(path,O_RDONLY))==-1){
         printf("Impossible de lire le fichier\n");
-    }
-    while((lus=read(fic,buff,1024))!=0){
-        int index_point=0;
-        for(i=0;i<lus;i++){
-            if(buff[i]=='.' || i-index_point==140 || i==lus-1){//Decoupage par phrase, si possible
-                char * str = malloc(sizeof(char)*((i-index_point)+2));
-                snprintf(str,(i-index_point+2),"%s",(buff+index_point));
+    }else{
+      while((lus=read(fic,buff,1024))!=0){
+            int index_point=0;
+            for(i=0;i<lus;i++){
+                if(buff[i]=='.' || i-index_point==140 || i==lus-1){//Decoupage par phrase, si possible
+                    char * str = malloc(sizeof(char)*((i-index_point)+2));
+                    snprintf(str,(i-index_point+2),"%s",(buff+index_point));
                 
-                add_msg(make_msg(diff->id, "DIFF", str));
+                  add_msg(make_msg(diff->id, "DIFF", str));
                 
-                index_point=i+1;
-                free(str);
+                 index_point=i+1;
+                    free(str);
+                }
             }
         }
     }

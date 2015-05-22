@@ -7,13 +7,13 @@ public class testclient {
 	public static void main(String[] args){
 		
 		try {
-			Socket socket = new Socket("localhost", 5566);
+			Socket socket = new Socket(args[0], Integer.parseInt(args[1]));
 			BufferedReader bf = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
 			
 			//pw.print("REGI test1 192.168.1.54 5566 192.168.1.54 5566\r\n");
 			//pw.flush();
-			pw.print("REGI "+args[0]+" "+args[1]+" "+args[2]+" "+args[3]+" "+args[4]+"\r\n");
+			pw.print("REGI "+args[2]+" "+args[3]+" "+args[4]+" "+args[5]+" "+args[6]+"\r\n");
 			pw.flush();
 			String read="";
 			while(true){

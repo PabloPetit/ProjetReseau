@@ -9,6 +9,7 @@
 #include "diffuseur.h"
 #include "messages.h"
 #include "server_tcp.h"
+#include "menu_principal.h"
 
 void printHelp();
 int check_id_valide(char*);
