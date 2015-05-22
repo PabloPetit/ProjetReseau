@@ -22,9 +22,21 @@ public class IDdiff {
 		
 	}
 	
+public IDdiff(String ID, String ip1, int port1, String ip2, int port2){
+		
+		if(ID.length() == 8){this.ID = ID;}
+		else{ while(ID.length()<8) ID+='#';}//correction de l'ID
+		this.ip1 = ip1;
+		this.port1 = port1;
+		this.ip2 = ip2;
+		this.port2 = port2;
+		
+		
+	}
+	
 	public IDdiff(String [] tab, Socket socket, PrintWriter pw){
 		this.ID = tab[1];//on commence a 1 car tab[0] = "REGI"
-		while(ID.length()<8) ID+='#';
+		while(ID.length()<8) ID+='#';//correction ID
 		this.ip1 = tab[2];
 		this.port1 = Integer.parseInt(tab[3]);
 		this.ip2 = tab[4];
@@ -34,7 +46,14 @@ public class IDdiff {
 	}
 	
 	public String toString(){
-		return (ID+" "+ip1+" "+port1+" "+ip2+" "+port2);
+		String PORT1 = ""+port1, PORT2 = ""+port2;
+		while(PORT1.length()<4){
+			PORT1 = "0"+PORT1;
+		}
+		while(PORT2.length()<4){
+			PORT2 = "0"+PORT2;
+		}
+		return (ID+" "+ip1+" "+PORT1+" "+ip2+" "+PORT2);
 	}
 	
 	public synchronized void setTestOK(){
@@ -59,4 +78,5 @@ public class IDdiff {
 	public String getId(){
 		return ID;
 	}
+	
 }

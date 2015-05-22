@@ -75,7 +75,9 @@ public class threadGestion implements Runnable {
 					
 					else break;
 					
-				} 	bf.close(); pw.close(); service.close();
+				} 	
+				out.print("Connection interompue avec : "+service.getInetAddress());
+				bf.close(); pw.close(); service.close(); 
 			}
 			catch(SocketTimeoutException st){
 				out.print("timeout");

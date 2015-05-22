@@ -6,7 +6,9 @@ int menu_principal(){
     
     extern liste_msg * lt_at;
     extern liste_msg * lt_at;
+    extern diffuseur * diff;
     char *fic_name, *msg;
+    char mess[141];
     fic_name = malloc(sizeof(char)*20);
     //message msg = malloc(sizeof(message));
     int ok=0;
@@ -23,8 +25,9 @@ int menu_principal(){
             case 0:
                 //envoyer un message ;
                 printf("Entrer un message\n");
-                //saisie(140,msg,"Entrer un message",0);
-                //add_msg(msg);
+                saisie(140,mess,"Entrer un message",0);
+                add_msg(make_msg(diff->id, "DIFF", mess));
+                print_liste(lt_at);
                 sleep(3);
                 break;
             case 1:
