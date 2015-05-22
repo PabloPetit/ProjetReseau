@@ -31,6 +31,7 @@ int connexion(int port, char * ip){
     int descr=socket(PF_INET,SOCK_STREAM,0);
     printf("\nConnexion en cours...\n\n");
     int r=connect(descr,(struct sockaddr *)&adress_sock,sizeof(struct sockaddr_in));
+    printf("R : %d\n",r);
     return (r==-1)?r:descr;
 }
 

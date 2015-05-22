@@ -128,7 +128,7 @@ int genere_diff(int sock,int nb){
             print("Erreur de format -6-, fin de la connexion au gestionnaire.");
             return 0;
         }
-        snprintf(id,9,"%s",(buff+5));
+        snprintf(id,9,"%s",(buff+5));//DECONE PAR LA
         snprintf(port1, 5, "%s",(buff+14));
         snprintf(ip1,16,"%s",(buff+19));
         snprintf(port2, 5, "%s",(buff+35));
