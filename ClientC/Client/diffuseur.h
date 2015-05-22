@@ -21,6 +21,8 @@
 #include <pthread.h>
 #include "saisie.h"
 
+#define REUSE 15
+
 typedef struct diffuseur{
     char id[9];
     char ip1[16];

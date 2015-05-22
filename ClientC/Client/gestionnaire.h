@@ -10,6 +10,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <netdb.h>
 #include "menu.h"
 #include "saisie.h"
 #include "diffuseur.h"

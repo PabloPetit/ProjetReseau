@@ -4,6 +4,7 @@ liste_dif * liste=NULL;
 liste_dif * liste_tmp=NULL;
 pthread_mutex_t verrou= PTHREAD_MUTEX_INITIALIZER;
 
+
 liste_dif * make_list(diffuseur * diff){
     liste_dif * lt = malloc(sizeof(liste_dif));
     lt->diff=diff;
@@ -89,7 +90,7 @@ int init_sockUDP(diffuseur * diff){
     int sock=socket(PF_INET,SOCK_DGRAM,0);
     sock=socket(PF_INET,SOCK_DGRAM,0);
     int ok=1;
-    int r=setsockopt(sock,SOL_SOCKET,SO_REUSEPORT,&ok,sizeof(ok));
+    int r=setsockopt(sock,SOL_SOCKET,REUSE,&ok,sizeof(ok));
     struct sockaddr_in address_sock;
     address_sock.sin_family=AF_INET;
     address_sock.sin_port=htons(atoi(diff->port1));
