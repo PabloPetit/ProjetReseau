@@ -9,7 +9,7 @@ void print(char * msg){
 }
 
 
-void saisie(int nb,char * buff,const char * intro,int flag){
+int saisie(int nb,char * buff,const char * intro,int flag){
     char c;
     buff[nb]='\0';
     memset(buff,'_',nb);
@@ -33,7 +33,7 @@ void saisie(int nb,char * buff,const char * intro,int flag){
         }else{
             switch(flag){
                 case ALPHANUMERIC :
-                    if(c=='#'){
+                    if(c=='#' || (c==10 && i>0)){
                         while(i<nb)buff[i++]='#';
                         break;
                     }
@@ -54,6 +54,15 @@ void saisie(int nb,char * buff,const char * intro,int flag){
                         buff[i++]=c;
                     }
                     break;
+                case ALNU_SIZELESS :
+                    if(c==10 && i>0){
+                        ok=0;
+                        break;
+                    }
+                    if(isalnum(c)){
+                        buff[i++]=c;
+                    }
+                    break;
                 default:
                     buff[i++]=c;
                     break;
@@ -61,4 +70,5 @@ void saisie(int nb,char * buff,const char * intro,int flag){
         }
         fflush(stdout);
     }
+    return i;
 }

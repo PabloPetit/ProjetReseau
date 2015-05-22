@@ -12,13 +12,14 @@ void recup_ip(char * ip){
     char * ch_ip[3];
     ip[15]='\0';
     ch_ip[0]="Localhost";
-    ch_ip[1]="Entrez un nom de machine : ";
+    ch_ip[1]="Entrer un nom de machine";
     ch_ip[2]="Entrer une IPv4";
-    switch (menu_simple("Choisir ip : ",ch_ip,2)) {
+    switch (menu_simple("Choisir ip : ",ch_ip,3)) {
         case 0:
             sprintf(ip,"localhost");
             break;
         case 1:
+            ip[saisie(15, ip, "Entrez un nom de machine (max 15) : ", ALNU_SIZELESS)]='\0';
             break;
         case 2:
             saisie(15, ip, "Entrez une IPv4 de la forme : XXX.XXX.XXX.XXX : ", IPV4);
@@ -64,9 +65,6 @@ int connexion(int port, char * ip){
     }
     return -1;
 }
-
-
-
 
 void connexion_gestionnaire(){
     char ip[16];
