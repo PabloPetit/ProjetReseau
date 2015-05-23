@@ -8,6 +8,7 @@
 #include "messages.h"
 #include "diffuseur.h"
 #include "saisie.h"
+#include "gestionnaire.h"
 
 int menu_principal();
 

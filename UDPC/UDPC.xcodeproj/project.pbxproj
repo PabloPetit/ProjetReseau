@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6EED278D1B108FCB0021FE7B /* getch.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EED27851B108FCB0021FE7B /* getch.c */; };
+		6EED278E1B108FCB0021FE7B /* menu_principal.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EED27871B108FCB0021FE7B /* menu_principal.c */; };
+		6EED278F1B108FCB0021FE7B /* menu.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EED27891B108FCB0021FE7B /* menu.c */; };
+		6EED27901B108FCB0021FE7B /* saisie.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EED278B1B108FCB0021FE7B /* saisie.c */; };
+		6EED27931B10952B0021FE7B /* gestionnaire.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EED27911B10952B0021FE7B /* gestionnaire.c */; };
 		6EF9294C1ADE6CEE00A9C400 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9294A1ADE6CEE00A9C400 /* main.c */; };
 		6EF9294F1ADE6D9D00A9C400 /* diffuseur.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EF9294D1ADE6D9D00A9C400 /* diffuseur.c */; };
 		6EF929521ADE6DE900A9C400 /* messages.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EF929501ADE6DE900A9C400 /* messages.c */; };
@@ -26,6 +31,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6EED27851B108FCB0021FE7B /* getch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getch.c; sourceTree = SOURCE_ROOT; };
+		6EED27861B108FCB0021FE7B /* getch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getch.h; sourceTree = SOURCE_ROOT; };
+		6EED27871B108FCB0021FE7B /* menu_principal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = menu_principal.c; sourceTree = SOURCE_ROOT; };
+		6EED27881B108FCB0021FE7B /* menu_principal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu_principal.h; sourceTree = SOURCE_ROOT; };
+		6EED27891B108FCB0021FE7B /* menu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = menu.c; sourceTree = SOURCE_ROOT; };
+		6EED278A1B108FCB0021FE7B /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = SOURCE_ROOT; };
+		6EED278B1B108FCB0021FE7B /* saisie.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = saisie.c; sourceTree = SOURCE_ROOT; };
+		6EED278C1B108FCB0021FE7B /* saisie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = saisie.h; sourceTree = SOURCE_ROOT; };
+		6EED27911B10952B0021FE7B /* gestionnaire.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gestionnaire.c; sourceTree = SOURCE_ROOT; };
+		6EED27921B10952B0021FE7B /* gestionnaire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gestionnaire.h; sourceTree = SOURCE_ROOT; };
 		6EF929401ADE6C4100A9C400 /* UDPC */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UDPC; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EF9294A1ADE6CEE00A9C400 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = SOURCE_ROOT; };
 		6EF9294B1ADE6CEE00A9C400 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = SOURCE_ROOT; };
@@ -75,6 +90,16 @@
 				6EF929511ADE6DE900A9C400 /* messages.h */,
 				6EF929531ADE6E3100A9C400 /* server_tcp.c */,
 				6EF929541ADE6E3100A9C400 /* server_tcp.h */,
+				6EED27851B108FCB0021FE7B /* getch.c */,
+				6EED27861B108FCB0021FE7B /* getch.h */,
+				6EED27911B10952B0021FE7B /* gestionnaire.c */,
+				6EED27921B10952B0021FE7B /* gestionnaire.h */,
+				6EED27871B108FCB0021FE7B /* menu_principal.c */,
+				6EED27881B108FCB0021FE7B /* menu_principal.h */,
+				6EED27891B108FCB0021FE7B /* menu.c */,
+				6EED278A1B108FCB0021FE7B /* menu.h */,
+				6EED278B1B108FCB0021FE7B /* saisie.c */,
+				6EED278C1B108FCB0021FE7B /* saisie.h */,
 			);
 			path = UDPC;
 			sourceTree = "<group>";
@@ -135,10 +160,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EED27931B10952B0021FE7B /* gestionnaire.c in Sources */,
 				6EF9294C1ADE6CEE00A9C400 /* main.c in Sources */,
+				6EED278E1B108FCB0021FE7B /* menu_principal.c in Sources */,
+				6EED278D1B108FCB0021FE7B /* getch.c in Sources */,
 				6EF929521ADE6DE900A9C400 /* messages.c in Sources */,
 				6EF929551ADE6E3100A9C400 /* server_tcp.c in Sources */,
+				6EED278F1B108FCB0021FE7B /* menu.c in Sources */,
 				6EF9294F1ADE6D9D00A9C400 /* diffuseur.c in Sources */,
+				6EED27901B108FCB0021FE7B /* saisie.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +285,7 @@
 				6EF929491ADE6C4100A9C400 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

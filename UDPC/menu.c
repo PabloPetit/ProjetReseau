@@ -92,7 +92,7 @@ liste_dif ** menu_diffuseurs(liste_dif * lst,int nb){//La liste tmp
             selected = (selected-1>=0)?selected-1:selected;
         }
         
-    }/*
+    }
     liste_dif ** retour = malloc(sizeof(liste_dif*));
     for(i=0;i<nb;i++){
         if (tab_select[i]){

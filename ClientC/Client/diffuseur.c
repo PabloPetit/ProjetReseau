@@ -130,14 +130,17 @@ int genere_diff(int sock,int nb){
             return 0;
         }
         snprintf(id,9,"%s",(buff+5));//DECONE PAR LA
-        snprintf(port1, 5, "%s",(buff+14));
-        snprintf(ip1,16,"%s",(buff+19));
-        snprintf(port2, 5, "%s",(buff+35));
-        snprintf(ip2,16,"%s",(buff+40));
+        snprintf(ip1,16,"%s",(buff+14));
+        snprintf(port1, 5, "%s",(buff+30));
+        snprintf(ip2,16,"%s",(buff+35));
+        snprintf(port2, 5, "%s",(buff+51));
+        
         if(strlen(id)!=8 || !verif_ip(ip1) || !verif_ip(ip2) || !verif_port(port1) || !verif_port(port2)){
             print("Erreur de format -7-, fin de la connexion au gestionnaire.");
             return 0;
         }
+        printf("GENERE LIST : \n");
+        printf("id : -%s-\n p1 : -%s-\n ip1 : -%s-\n p2 : -%s-\n ip2 : -%s-\n",id,port1,ip1,port2,ip2);
         add_diff(&liste_tmp, make_diff(id, port1, ip1, port2, ip2));
     }
     return 1;
@@ -174,7 +177,7 @@ int menu_action_diff(){
     return menu_simple(intro,args,4);
 }
 
-int send_msg(int port, char * addr, char * mess){
+int send_msg(int port, char * addr, char * mess){//A faire peut etre avec gettaddrinfo
     struct sockaddr_in adress_sock;
     adress_sock.sin_family = AF_INET;
     adress_sock.sin_port = htons(port);
@@ -293,9 +296,11 @@ void lecture_gestionnaire(int sock){
     }
     
     liste_dif ** selection = (menu_diffuseurs(liste_tmp,nb));
-    if(selection==NULL) return;
+    if(selection==NULL) return;//Test pas bon
     
     liste_dif * lst=*selection;//Il la voulais pas dans le while
+    printf("SELECTION\n");
+    print_liste(lst);
     switch (menu_action_diff()) {
         case 0:
             while(lst!=NULL) {
@@ -303,6 +308,7 @@ void lecture_gestionnaire(int sock){
                 lst=lst->suivant;
             }
             transfert_liste(*selection, &liste);
+            print_liste(liste);
             break;
         case 1:
             diffuser_message(*selection);//pas tester

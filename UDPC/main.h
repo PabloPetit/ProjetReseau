@@ -10,6 +10,7 @@
 #include "messages.h"
 #include "server_tcp.h"
 #include "menu_principal.h"
+#include "gestionnaire.h"
 
 void printHelp();
 int check_id_valide(char*);

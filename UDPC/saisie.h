@@ -10,9 +10,10 @@
 #define ALPHANUMERIC 0
 #define NUMERIC 1
 #define IPV4 2
+#define ALNU_SIZELESS 3
 
 
 void print(char *);
-void saisie(int,char *,const char *,int);
+int saisie(int,char *,const char *,int);
 
 #endif /* defined(__Client__saisie__) */

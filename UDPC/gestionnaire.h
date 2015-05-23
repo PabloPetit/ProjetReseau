@@ -11,14 +11,19 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
 #include "menu.h"
 #include "saisie.h"
-#include "diffuseur.h"
 
 int recup_port();
 int recup_ip(char *);
 int connexion(int, char *);
 int connexion2(int, char *);
 void connexion_gestionnaire();
+void get_ip();
+void * run_gestionnaire(void * arg);
 
 #endif /* defined(__Client__gestionnaire__) */

@@ -1,6 +1,5 @@
 #include "gestionnaire.h"
 
-
 int recup_port(){
     char buff[5];
     buff[4]='\0';
@@ -30,7 +29,6 @@ int recup_ip(char * ip){
 }
 
 int connexion2(int port, char * ip){// Pour choix : localhost
-    printf("CONNEXION 2\n");
     struct sockaddr_in adress_sock;
     adress_sock.sin_family = AF_INET;
     adress_sock.sin_port = htons(port);
@@ -38,7 +36,6 @@ int connexion2(int port, char * ip){// Pour choix : localhost
     int descr=socket(PF_INET,SOCK_STREAM,0);
     printf("\nConnexion en cours...\n\n");
     int r=connect(descr,(struct sockaddr *)&adress_sock,sizeof(struct sockaddr_in));
-    printf("R : %d\n",r);
     return (r==-1)?r:descr;
 }
 
@@ -70,6 +67,71 @@ int connexion(int port, char * ip){//Pour choix : machine || ip
     return -1;
 }
 
+void get_ip(char * ip){
+    
+    int fd[2];
+   	pipe(fd);
+    char * argv[3];
+    argv[0]="java";
+    argv[1]="Ip";
+    argv[2]=NULL;
+    int pid = fork();
+    
+    if(pid==-1){
+        print("Recuperation de l'ip impossible");
+    }else if(pid==0){
+        dup2(fd[1],1);
+        execvp(argv[0],argv);
+        exit(1);
+    }else{
+        wait(NULL);
+        read(fd[0],ip,15);
+    }
+    ip[15]='\0';
+}
+
+int regi(int sock){//[REGI␣id␣ip1␣port1␣ip2␣port2]4+1+8+1+15+1+4+1+15+1+4+2
+    extern diffuseur * diff;
+    long lus;
+    char mess[58];
+    char ip[16];
+    char ret[7];
+    ret[6]='\0';
+    get_ip(ip);
+    snprintf(mess,58,"REGI %s %s %s %s %s\r\n",diff->id,diff->ipv4,diff->port_multi,ip,diff->port_tcp);
+    send(sock, mess, 57, 0);
+    lus=recv(sock, ret,6, 0);
+    printf("RECV : -%s-\n",ret);
+    if(lus==6 && strcmp("REOK\r\n",ret)==0){
+        int * tmp = malloc(sizeof(int));
+        *tmp=sock;
+        pthread_t th;
+        pthread_create(&th,NULL,run_gestionnaire,tmp);
+    }else{
+        return 0;
+    }
+    return 1;
+}
+
+void * run_gestionnaire(void * arg){
+    int sock = *((int*)arg);
+    long lus;
+    char buff[7];
+    buff[6]='\0';
+    while(42){
+        lus=recv(sock,buff,6,0);
+        if (lus==6 && strcmp("RUOK\r\n",buff)==0){
+            send(sock,"IMOK\r\n",6,0);
+        }else{
+            break;
+        }
+    }
+    close(sock);
+    free(arg);
+    print("Connexion interrompu avec un des gestionnaire.");
+    return NULL;
+}
+
 void connexion_gestionnaire(){
     char ip[16];
     int port=recup_port();
@@ -84,6 +146,10 @@ void connexion_gestionnaire(){
     }
     printf("Connexion Réussi\n");
     fflush(stdout);
-    lecture_gestionnaire(sock);
-    close(sock);
+    if(!regi(sock)){
+        close(sock);
+        print("Un probleme de connexion a eu lieu, abandon.");
+    }else{
+        print("La connexion a ete etablie.");
+    }
 }

@@ -98,7 +98,6 @@ int main(int argc, char * argv[]){
     extern diffuseur * diff;
     extern liste_msg * lt_at;
     extern liste_msg * lt_df;
-    
     int i,d,f;
     char *ipv4, *id, *port_multi, *port_tcp, *path;
     ipv4=NULL; id=NULL; port_multi=NULL; port_tcp=NULL; path=NULL;
@@ -195,13 +194,14 @@ int main(int argc, char * argv[]){
     
     pthread_create(&thread_tcp,NULL,run_server_tcp,NULL);
     pthread_create(&thread_dif,NULL,diffuseur_run,NULL);
+    
     menu_principal();
 
-    exit(0);
-    pthread_join(thread_tcp,NULL);
-    pthread_join(thread_dif,NULL);
+    //exit(0);
+    //pthread_join(thread_tcp,NULL);
+    //pthread_join(thread_dif,NULL);
     
-    printf("END OF MAIN\n");
+   // printf("END OF MAIN\n");
     
     return 0;
 }

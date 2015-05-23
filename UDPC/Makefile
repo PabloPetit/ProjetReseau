@@ -1,4 +1,5 @@
-SOURCES=main.c diffuseur.c messages.c server_tcp.c menu.c menu_principal.c getch.c saisie.c
+SOURCES=main.c diffuseur.c messages.c server_tcp.c menu.c menu_principal.c getch.c saisie.c gestionnaire.c
+
 OBJECTS =$(SOURCES:.c=.o)
 CFLAGS= -std=c99 -std=gnu99 -Wall -g  -pthread
 EXECUTABLE=main

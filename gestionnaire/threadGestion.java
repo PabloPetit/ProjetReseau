@@ -36,7 +36,7 @@ public class threadGestion implements Runnable {
 							diffuseur = new IDdiff(req, service,pw);
 							if(bottin.add(diffuseur)){
 								pw.print("REOK\r\n");
-								//pw.flush();
+								pw.flush();//ligne decommenté
 								out.print("Le diffuseur : "+diffuseur.getId()+" est enregistré");
 							}else{
 								pw.print("RENO\r\n");

@@ -7,12 +7,10 @@ int menu_principal(){
     extern liste_msg * lt_at;
     extern liste_msg * lt_at;
     extern diffuseur * diff;
-    char *fic_name, *msg;
     char mess[141];
-    fic_name = malloc(sizeof(char)*20);
-    //message msg = malloc(sizeof(message));
+    char fic_name[35];
     int ok=0;
-    char * intro, *args[4];
+    char * intro, *args[5];
     intro = "Menu Principal du Diffuseur:";
     args[0]="Envoyer un message";
     args[1]="Charger fichier";
@@ -23,24 +21,21 @@ int menu_principal(){
     while(!ok){
         switch(menu_simple(intro,args,5)){
             case 0:
-                //envoyer un message ;
-                printf("Entrer un message\n");
-                saisie(140,mess,"Entrer un message",0);
+                saisie(140,mess,"Entrer un message",ALPHANUMERIC);//Bug par la, surement une histoire de verrou
                 add_msg(make_msg(diff->id, "DIFF", mess));
                 print_liste(lt_at);
-                sleep(3);
                 break;
             case 1:
-                //system("clear");
                 printf("Entrer l'adresse du fichier\n");
-                scanf("%20s",fic_name);
+                fic_name[saisie(35, fic_name, "Entrer l'adresse du fichier", ALNU_SIZELESS)]='\0';
                 charger_fichier(fic_name);
                 print_liste(lt_at);
-                sleep(3);
                 break;
             case 2:
                 print_liste(lt_at);
-                sleep(3);
+                break;
+            case 3:
+                connexion_gestionnaire();
                 break;
             case 4:
                 ok=1;
