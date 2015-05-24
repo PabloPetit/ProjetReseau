@@ -100,7 +100,10 @@ int init_sockUDP(diffuseur * diff){
     mreq.imr_multiaddr.s_addr=inet_addr(diff->ip1);
     mreq.imr_interface.s_addr=htonl(INADDR_ANY);
     r=setsockopt(sock,IPPROTO_IP,IP_ADD_MEMBERSHIP,&mreq,sizeof(mreq));
-    if (r!=-1) diff->sockUDP=sock;
+    if (r!=-1){
+        fcntl( sock, F_SETFL, O_NONBLOCK);
+        diff->sockUDP=sock;
+    }
     return r!=-1;
 }
 
@@ -220,6 +223,7 @@ void reception_old_mess(int sock,int nb){
     int nb_recu = 0;
     tmp[158]='\0';
     while((lus=recv(sock, tmp, 159, 0))!=-1  && nb_recu<nb){
+        printf("RECU -%s-\n",tmp);
         if(lus != 158){
             print("Format errone, abandon.");
             return;
@@ -301,10 +305,13 @@ void lecture_gestionnaire(int sock){
     liste_dif * lst=*selection;//Il la voulais pas dans le while
     printf("SELECTION\n");
     print_liste(lst);
+    
     switch (menu_action_diff()) {
         case 0:
-            while(lst!=NULL) {
+            while(lst!=NULL) {// ajout a la liste de lecture
                 init_sockUDP(lst->diff);
+                pthread_t th;
+                pthread_create(&th, NULL, run_lecture, &lst->diff->sockUDP);
                 lst=lst->suivant;
             }
             transfert_liste(*selection, &liste);

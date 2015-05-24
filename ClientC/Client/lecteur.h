@@ -10,8 +10,20 @@
 #define __Client__lecteur__
 
 #include <stdio.h>
-#include "diffuseur.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <unistd.h>
+#include <string.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netdb.h>
 
-void * run_lecteur(void *);
+
+
+
+void * run_lecture(void *);
 
 #endif /* defined(__Client__lecteur__) */

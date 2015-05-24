@@ -9,8 +9,9 @@
 #include "menu_principal.h"
 #include "menu.h"
 #include "saisie.h"
+#include "lecteur.h"
 
 void saisie_id();
 void format_id(char *,char *);
-
+int  saisie_tty_out();
 #endif

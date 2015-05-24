@@ -19,7 +19,10 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <pthread.h>
+#include <fcntl.h>
+#include "lecteur.h"
 #include "saisie.h"
+
 
 #define REUSE 15
 
