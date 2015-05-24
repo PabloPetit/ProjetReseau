@@ -8,16 +8,18 @@ public class screen {
 	private int ligneMax;
 	private int charMax;
 	private annuaire bottin;
+	private String hostname;
 	private String colonne1 = "Events";
 	private String colonne2 = "Diffuseur(s)";
 	private String ip;
 	private int port;
 	
-	public screen(int ligneMax, int charMax, annuaire bottin, String ip, int port){
+	public screen(int ligneMax, int charMax, annuaire bottin, String hostname, String ip, int port){
 		this.events = new ArrayList<String>();
 		this.ligneMax = ligneMax;
 		this.charMax = charMax;
 		this.bottin = bottin;
+		this.hostname = hostname;
 		this.ip = ip;
 		this.port = port;
 	}
@@ -118,7 +120,7 @@ public class screen {
 		//├  ─  ┤ │ ┼ ┐ └ ┴ ┬ ┘ ┌
 		clear();
 		
-		System.out.println("Gestionnaire  ip : "+ip+"  port : "+port);
+		System.out.println("Gestionnaire -> nom : "+hostname+" ip : "+ip+"  port : "+port);
 		
 		cadre(0);
 		cadre(1);

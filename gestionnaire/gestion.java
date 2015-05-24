@@ -40,8 +40,9 @@ public class gestion {
 		try{
 			InetAddress address = InetAddress.getLocalHost(); 
 		    String ip = address.getHostAddress() ;
-		   // String hostName = address.getHostName(); 
-			screen out = new screen(25,60, bottin, ip, port);
+		    String hostname = address.getHostName(); 
+		    //String hostname = address.getCanonicalHostName(); 
+			screen out = new screen(25,60, bottin, hostname, ip, port);
 			out.print("Serveur Gestionnaire créé sur le port "+port);
 			threadTest test = new threadTest(bottin, out);
 			Thread threadTest = new Thread(test);
