@@ -12,6 +12,7 @@ void print_liste(liste_msg * liste){
     liste_msg * lt = liste;
     if(lt==NULL){
         printf("\nListe vide.\n\n");
+        pthread_mutex_unlock(&verrou);
         return;
     }
     printf("\nListe des messages :\n\n");
