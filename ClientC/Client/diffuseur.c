@@ -215,7 +215,7 @@ void diffuser_message(liste_dif * lst){
 int check_old_mess(char * buff){
     int res=1,i;
     res = !memcmp("OLDM",buff,4);
-    for(i=5;i<13;i++) res=isdigit(buff[i]);
+    for(i=5;i<9;i++) res=isdigit(buff[i]);
     return res;
 }
 
