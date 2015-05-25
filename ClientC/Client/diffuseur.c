@@ -197,8 +197,8 @@ int send_msg(int port, char * addr, char * mess){//A faire peut etre avec gettad
 }
 
 void diffuser_message(liste_dif * lst){
-    char texte[141];
     extern char id[9];
+    char texte[141];
     saisie(140, texte, "Entrez le message : ", ALPHANUMERIC);
     char mess [157];
     snprintf(mess, 157,"MESS %s %s\r\n",id,texte);
@@ -221,11 +221,15 @@ int check_old_mess(char * buff){
 
 void reception_old_mess(int sock,int nb){
     char tmp[162];//161
+    extern int out;
     long lus=-1;
     int nb_recu = 0;
     tmp[161]='\0';
+    char * tmp0="OLD MESS : \n";
+    char * tmp2 = "\n          ----------          \n";
+
     while((lus=recv(sock, tmp, 161, 0))!=-1  && nb_recu<nb){
-        if(lus == 6 && !strcmp(tmp,"ENDM")){
+        if(lus == 6 && !strcmp(tmp,"ENDM\r\n")){//Ptite correction a faire
             return;
         }
         if(lus != 161){
@@ -236,8 +240,11 @@ void reception_old_mess(int sock,int nb){
             print("Format errone, abandon.-1-");
             return;
         }
-        printf("%s\n",tmp);
-        //Lecteur.print(tmp)
+        
+        write(out,tmp0,strlen(tmp0));
+        write(out,tmp,strlen(tmp));
+        write(out,tmp2,strlen(tmp2));
+        
         nb_recu++;
     }
 }
@@ -268,8 +275,17 @@ void display_old_mess(liste_dif * lst){
     }
 }
 
+int length(liste_dif * lst){
+    int nb=0;
+    while(lst!=NULL){
+        nb++;
+        lst=lst->suivant;
+    }
+    return nb;
+}
+
 void gestion_menu_diff(liste_dif * tmp){
-    int nb=1;
+    int nb=length(tmp);
     liste_dif ** selection = (menu_diffuseurs(tmp,nb));
     if(selection==NULL) return;//Test pas bon
     
