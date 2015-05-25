@@ -36,7 +36,7 @@ public class threadGestion implements Runnable {
 							diffuseur = new IDdiff(req, service,pw);
 							if(bottin.add(diffuseur)){
 								pw.print("REOK\r\n");
-								pw.flush();//ligne decommenté
+								//pw.flush();
 								out.print("Le diffuseur : "+diffuseur.getId()+" est enregistré");
 							}else{
 								pw.print("RENO\r\n");
@@ -76,7 +76,13 @@ public class threadGestion implements Runnable {
 					else break;
 					
 				} 	
+				
 				out.print("Connection interompue avec : "+service.getInetAddress());
+				if(diffuseur != null) {
+					bottin.supp(diffuseur);
+					out.print("Supression de l'annuaire du diffuseur "+diffuseur.getId());
+				}
+				
 				bf.close(); pw.close(); service.close(); 
 			}
 			catch(SocketTimeoutException st){

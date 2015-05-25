@@ -64,6 +64,17 @@ public class gestion {
 	
 	public static void main(String[] args){
 		clear();
+		
+		if(args.length > 0){
+			if(args[0].equals("d")){
+				gestion ges = new gestion(5566, 15);
+				ges.serviceGestion();
+			}else{
+				gestion ges = new gestion(Integer.parseInt(args[0]),Integer.parseInt( args[1]));
+				ges.serviceGestion();
+			}
+		}else{
+		
 		Scanner scan = new Scanner(System.in);
 		int port , max =-1;
 		
@@ -99,5 +110,6 @@ public class gestion {
 		
 		gestion ges = new gestion(port, max);
 		ges.serviceGestion();
+		}
 	}
 }

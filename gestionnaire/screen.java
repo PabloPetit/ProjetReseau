@@ -1,4 +1,6 @@
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -48,7 +50,11 @@ public class screen {
 	}
 	
 	public void print(String s){
-		
+		Date date = new Date();
+		 SimpleDateFormat dateFormat;
+		 
+		dateFormat = new SimpleDateFormat("hh:mm:ss");
+		s = dateFormat.format(date)+"->"+s;
 		String [] S = cutR(s);
 		
 		//for(String str : S){
