@@ -9,6 +9,21 @@
 #include "lecteur.h"
 
 
+char * getTime(void){
+    
+    time_t seconde;
+    struct tm instant;
+    
+    char * heure = malloc(sizeof(char)*8);
+    
+    time(&seconde);
+    instant=*localtime(&seconde);
+    
+    snprintf(heure, 9,"%d:%d:%d", instant.tm_hour, instant.tm_min, instant.tm_sec);
+    return heure;
+    //return 0;
+}
+
 void * run_lecture(void * arg){
     extern int out;
     diffuseur * diff = (diffuseur *)arg;

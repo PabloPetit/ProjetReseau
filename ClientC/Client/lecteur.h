@@ -10,7 +10,6 @@
 #define __Client__lecteur__
 
 #include <stdio.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <errno.h>
@@ -20,6 +19,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <time.h>
 #include "diffuseur.h"
 
 
