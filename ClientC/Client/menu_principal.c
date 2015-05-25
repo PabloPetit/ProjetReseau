@@ -4,7 +4,7 @@
 int menu_principal(){
     int ok=0;
     char * intro, *args[4];
-    intro = "Menu Principal :";
+    intro = "Menu Principal du Client:";
     args[0]="Changer d'identifiant.";
     args[1]="Consulter un gestionnaire";
     args[2]="Liste des diffuseurs";
