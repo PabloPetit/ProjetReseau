@@ -7,7 +7,11 @@ void post_old_msg(int sock,int nb){
     liste_msg * lt=lt_df;
     int i=0;
     
-    if(lt==NULL || lt==0) return;
+    if(lt==NULL || lt==0){
+        send(sock,"ENDM\r\n",(sizeof(char)*6),0);
+        pthread_mutex_unlock(&verrou);
+        return;
+    }
     
     while(i<nb && lt->suivant != NULL){
         char buff[164];
