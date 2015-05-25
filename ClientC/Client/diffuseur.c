@@ -225,7 +225,9 @@ void reception_old_mess(int sock,int nb){
     int nb_recu = 0;
     tmp[161]='\0';
     while((lus=recv(sock, tmp, 161, 0))!=-1  && nb_recu<nb){
-        printf("RECU -%s-\n",tmp);
+        if(lus == 6 && !strcmp(tmp,"ENDM")){
+            return;
+        }
         if(lus != 161){
             print("Format errone, abandon.");
             return;
