@@ -23,14 +23,16 @@ void post_old_msg(int sock,int nb){
 int match_message(char * msg,long size,int sock){
     char type[5];
     
-    if(size<10||size>156){
+    if(size<9||size>156){
+        printf("Message de taille incorrecte\n");
         return 0;
     }
     snprintf(type,5,"%s",msg);
-    printf("MESS -%s-\n",msg);
-    printf("TYPE : -%s-\n",type);
     if(strcmp("MESS",type)==0){
-        if(size<15)return 0;
+        if(size<15){
+            printf("Message de taille incorrecte(2)\n");
+            return 0;
+        }
         char id[9],mess[141];
         
         snprintf(id,9,"%s",(msg+5));
@@ -42,10 +44,15 @@ int match_message(char * msg,long size,int sock){
         tmp[8]='\0';
         send(sock,tmp,9,0);
     }else if(strcmp("LAST",type)==0){
-        if(size!=9)return 0;
+        if(size!=9){
+            printf("Message de taille incorrecte(3)\n");
+            return 0;
+        }
         int nb;
         if((nb=atoi((msg+5)))<0)return 2;
         post_old_msg(sock,nb);
+    }else{
+        printf("Type non reconnu\n");
     }
     return 1;
 }
@@ -62,7 +69,7 @@ void * run_client(void * arg){
     recu=recv(sock,buff,1024*sizeof(char),0);
     
     if(!match_message(buff,recu,sock)){
-        print("La demande du client ne respecte pas le format, connexion fermée.\n");
+        printf("La demande du client ne respecte pas le format, connexion fermée.\n");
     }
     
     close(sock);

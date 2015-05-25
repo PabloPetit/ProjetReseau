@@ -176,12 +176,13 @@ int main(int argc, char * argv[]){
     }
     
     print_param_final(id,port_tcp,port_multi,ipv4);
-    print("");
+    
     
     diff = make_diffuseur(id,port_tcp,port_multi,ipv4,3);
     
     print_diffuseur(diff);
     
+    print("");
     
     if(path!=NULL && f){
 

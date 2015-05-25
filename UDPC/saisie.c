@@ -3,7 +3,7 @@
 
 void print(char * msg){
     int c;
-    printf("\n%s\n\n",msg);
+    printf("\n%s\n[Push Enter]\n",msg);
     fflush(stdout);
     while((c=getchr())!=10);
 }
