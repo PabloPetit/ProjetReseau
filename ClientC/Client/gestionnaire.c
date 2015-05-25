@@ -30,7 +30,6 @@ int recup_ip(char * ip){
 }
 
 int connexion2(int port, char * ip){// Pour choix : localhost
-    printf("CONNEXION 2\n");
     struct sockaddr_in adress_sock;
     adress_sock.sin_family = AF_INET;
     adress_sock.sin_port = htons(port);
@@ -76,7 +75,7 @@ void connexion_gestionnaire(){
     int c=recup_ip(ip);
     int sock;
     printf("\nIP : -%s- : PORT  : -%d-\n",ip,port);
-    if(c==0)sock=connexion2(port, ip);
+    if(c==0 || c==2)sock=connexion2(port, ip);
     else sock=connexion(port, ip);
     if(sock==-1){
         print("Connexion au gestionnaire impossible.");
