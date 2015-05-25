@@ -177,7 +177,7 @@ int main(int argc, char * argv[]){
     
     print_param_final(id,port_tcp,port_multi,ipv4);
     
-    diff = make_diffuseur(id,port_tcp,port_multi,ipv4,1);
+    diff = make_diffuseur(id,port_tcp,port_multi,ipv4,10);
     
     print_diffuseur(diff);
     

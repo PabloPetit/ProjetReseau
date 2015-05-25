@@ -136,9 +136,9 @@ void charger_fichier(char * path){
                     char * str = malloc(sizeof(char)*((i-index_point)+2));
                     snprintf(str,(i-index_point+2),"%s",(buff+index_point));
                 
-                  add_msg(make_msg(diff->id, "DIFF", str));
+                    add_msg(make_msg(diff->id, "DIFF", str));
                 
-                 index_point=i+1;
+                    index_point=i+1;
                     free(str);
                 }
             }
