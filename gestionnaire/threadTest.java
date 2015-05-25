@@ -25,6 +25,7 @@ public class threadTest implements Runnable {
 				for ( IDdiff test : bottin.getList()){
 					if(test!=null){
 						if(test.socket.isClosed()){
+							out.print("Supression de l'annuaire du diffuseur "+test.getId());
 							bottin.supp(test.getId());
 						}else{
 							out.print("Test du diffuseur "+test.getId());
@@ -38,13 +39,15 @@ public class threadTest implements Runnable {
 							}else{
 								out.print("Supression de l'annuaire du diffuseur "+test.getId());
 								if (bottin.supp(test)) out.print(test.getId()+" supprimé");
+								test.close();
+								break;
 								
 							}
 							}catch(Exception e){
 								//e.printStackTrace();
 								out.print("Le diffuseur "+test.getId()+" ne repond pas");
 								out.print("Supression de l'annuaire du diffuseur "+test.getId());
-								//bottin.supp(test.getId());
+								test.close();
 								bottin.supp(test);
 							}
 							//System.out.println("rep -> "+rep);

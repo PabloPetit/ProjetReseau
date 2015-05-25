@@ -79,4 +79,12 @@ public IDdiff(String ID, String ip1, int port1, String ip2, int port2){
 		return ID;
 	}
 	
+	public void close(){
+		pw.close();
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

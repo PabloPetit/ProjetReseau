@@ -25,7 +25,11 @@ public class threadGestion implements Runnable {
 				String[] req;
 				IDdiff diffuseur = null;
 				while(true){
+					try{
 					read = bf.readLine();
+					}catch(Exception e){
+						break;
+					}
 					//out.print("gestion lit -> "+read);
 					if(read == null) break;
 					req = read.split(" ");
@@ -80,7 +84,9 @@ public class threadGestion implements Runnable {
 				out.print("Connection interompue avec : "+service.getInetAddress());
 				if(diffuseur != null) {
 					bottin.supp(diffuseur);
+					if(!service.isClosed())
 					out.print("Supression de l'annuaire du diffuseur "+diffuseur.getId());
+					
 				}
 				
 				bf.close(); pw.close(); service.close(); 
