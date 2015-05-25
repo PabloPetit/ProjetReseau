@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>1E596E1D-7619-4F6B-8046-3AF185726EF7</string>
 	<key>IDESourceControlProjectName</key>
-	<string>Client</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>3E49A662558069822548B41A5DE892824F5B10A1</key>
 		<string>https://github.com/PabloPetit/ProjetReseau.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>ClientC/Client.xcodeproj</string>
+	<string>ClientC/Client.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>3E49A662558069822548B41A5DE892824F5B10A1</key>

@@ -34,9 +34,9 @@ void * run_lecture(void * arg){
         lus = recv(diff->sockUDP,buff,142,0);
         if(lus>=0){
             buff[lus]='\0';
-            char tmp1[31];
-            snprintf(tmp1,31,"\nMessage reçu de : %s :\n",diff->id);
-            write(out,tmp1,31);
+            char tmp1[100];
+            snprintf(tmp1,100,"\nMessage reçu de : %s a %s:\n",diff->id,getTime());
+            write(out,tmp1,strlen(tmp1));
             write(out,buff,lus);
             write(out,tmp2,strlen(tmp2));
         }
