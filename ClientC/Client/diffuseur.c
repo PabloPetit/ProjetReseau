@@ -38,25 +38,31 @@ void add_diff(liste_dif ** liste,diffuseur * diff){
 }
 
 void clear_liste(liste_dif ** liste){
+    *liste=NULL;
+
+    /*
     pthread_mutex_lock(&verrou);
     liste_dif * next;
+    liste_dif * temp = *liste;
     if(*liste==NULL || *liste==0){
         pthread_mutex_unlock(&verrou);
         return;
     }
     if((*liste)->diff==NULL){
         free(*liste);
+        *liste = NULL;
         pthread_mutex_unlock(&verrou);
         return;
     }
     while ((*liste)->suivant!=NULL) {
         next = (*liste)->suivant;
-        free((*liste)->diff);
         free(*liste);
         liste = &next;
     }
     *liste=NULL;
+    temp=NULL;
     pthread_mutex_unlock(&verrou);
+     */
 }
 
 void print_liste(liste_dif * liste){
@@ -289,14 +295,14 @@ void gestion_menu_diff(liste_dif * tmp){
     liste_dif ** selection = (menu_diffuseurs(tmp,nb));
     if(selection==NULL) return;//Test pas bon
     
-    liste_dif * lst=*selection;//Il la voulais pas dans le while
+    liste_dif * lst=*selection;
+    printf("SELECRTION\n");
     print_liste(lst);
+    
+    if(nb==0 || liste_tmp==NULL)return;
     
     switch (menu_action_diff()) {
         case 0:
-            
-            if(nb==0 || liste_tmp==NULL)break;
-            
             while(lst!=NULL) {// ajout a la liste de lecture
                 init_sockUDP(lst->diff);
                 pthread_t * th = malloc(sizeof(pthread_t));
@@ -305,25 +311,20 @@ void gestion_menu_diff(liste_dif * tmp){
                 lst=lst->suivant;
             }
             transfert_liste(*selection, &liste);
-            //print_liste(liste);
+            print_liste(liste);
             break;
         case 1:
-            if(nb==0 || liste_tmp==NULL)break;
             diffuser_message(*selection);//pas tester
             break;
         case 2:
-            if(nb==0 || liste_tmp==NULL)break;
             display_old_mess(*selection);//pas tester
             break;
         case 3:
             return;
             break;
     }
-    /*bug
-     clear_liste(&liste_tmp);
-     clear_liste(selection);
-     */
     
+     clear_liste(&liste_tmp);
 }
 
 
