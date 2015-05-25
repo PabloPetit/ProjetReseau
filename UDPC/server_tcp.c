@@ -31,8 +31,6 @@ int match_message(char * msg,long size,int sock){
         printf("Message de taille incorrecte\n");
     }
     snprintf(type,5,"%s",msg);
-    printf("MESS -%s-\n",msg);
-    printf("TYPE : -%s-\n",type);
     if(strcmp("MESS",type)==0){
         if(size<15){
             printf("Message de taille incorrecte(2)\n");
