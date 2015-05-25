@@ -241,12 +241,12 @@ void reception_old_mess(int sock,int nb){
 }
 
 void display_old_mess(liste_dif * lst){
-    char tmp [4];
-    saisie(3, tmp,"Combien de message a recuperer ? : ", NUMERIC);
+    char tmp [3];
+    saisie(2, tmp,"Combien de message a recuperer ? : ", NUMERIC);
     int nb = atoi (tmp);
     
-    char oldMess[11];
-    snprintf(oldMess, 11, "LAST %s\r\n",tmp);
+    char oldMess[9];
+    snprintf(oldMess, 9, "LAST %s\r\n",tmp);
     while(lst!=NULL){
         struct sockaddr_in adress_sock;
         adress_sock.sin_family = AF_INET;
@@ -259,7 +259,7 @@ void display_old_mess(liste_dif * lst){
             snprintf(tmp,56,"Envoie de la demande au diffuseur %s impossible.",lst->diff->id);
             print(tmp);
         }
-        send(descr,oldMess,11,0);
+        send(descr,oldMess,9,0);
         reception_old_mess(descr,nb);
         close(descr);
         lst=lst->suivant;
