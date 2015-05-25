@@ -220,18 +220,18 @@ int check_old_mess(char * buff){
 }
 
 void reception_old_mess(int sock,int nb){
-    char tmp[159];
+    char tmp[162];//161
     long lus=-1;
     int nb_recu = 0;
-    tmp[158]='\0';
-    while((lus=recv(sock, tmp, 159, 0))!=-1  && nb_recu<nb){
+    tmp[161]='\0';
+    while((lus=recv(sock, tmp, 161, 0))!=-1  && nb_recu<nb){
         printf("RECU -%s-\n",tmp);
-        if(lus != 158){
+        if(lus != 161){
             print("Format errone, abandon.");
             return;
         }
         if(!check_old_mess(tmp)){
-            print("Format errone, abandon.");
+            print("Format errone, abandon.-1-");
             return;
         }
         printf("%s\n",tmp);

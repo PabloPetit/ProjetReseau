@@ -143,7 +143,6 @@ void connexion_gestionnaire(){
         print("Connexion au gestionnaire impossible.");
         return;
     }
-    printf("Connexion Réussi\n");
     fflush(stdout);
     if(!regi(sock)){
         close(sock);
