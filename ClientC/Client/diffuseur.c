@@ -283,7 +283,7 @@ void gestion_menu_diff(liste_dif * tmp){
                 init_sockUDP(lst->diff);
                 pthread_t * th = malloc(sizeof(pthread_t));
                 lst->diff->th=th;
-                pthread_create(th, NULL, run_lecture, &lst->diff->sockUDP);
+                pthread_create(th, NULL, run_lecture, &lst->diff);
                 lst=lst->suivant;
             }
             transfert_liste(*selection, &liste);
