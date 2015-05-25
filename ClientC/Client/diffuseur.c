@@ -20,6 +20,7 @@ diffuseur * make_diff(char * id,char * port1,char * ip1,char * port2, char * ip2
     snprintf(diff->ip1,16,"%s",ip1);
     snprintf(diff->ip2,16,"%s",ip2);
     diff->sockUDP = -1;
+    diff->th=NULL;
     return diff;
 }
 
@@ -132,11 +133,12 @@ int genere_diff(int sock,int nb){
             print("Erreur de format -6-, fin de la connexion au gestionnaire.");
             return 0;
         }
-        snprintf(id,9,"%s",(buff+5));//DECONE PAR LA
+        snprintf(id,9,"%s",(buff+5));
         snprintf(ip1,16,"%s",(buff+14));
         snprintf(port1, 5, "%s",(buff+30));
         snprintf(ip2,16,"%s",(buff+35));
         snprintf(port2, 5, "%s",(buff+51));
+        
         
         if(strlen(id)!=8 || !verif_ip(ip1) || !verif_ip(ip2) || !verif_port(port1) || !verif_port(port2)){
             print("Erreur de format -7-, fin de la connexion au gestionnaire.");
@@ -264,6 +266,48 @@ void display_old_mess(liste_dif * lst){
     }
 }
 
+void gestion_menu_diff(liste_dif * tmp){
+    int nb=1;
+    liste_dif ** selection = (menu_diffuseurs(tmp,nb));
+    if(selection==NULL) return;//Test pas bon
+    
+    liste_dif * lst=*selection;//Il la voulais pas dans le while
+    print_liste(lst);
+    
+    switch (menu_action_diff()) {
+        case 0:
+            
+            
+            
+            while(lst!=NULL) {// ajout a la liste de lecture
+                init_sockUDP(lst->diff);
+                pthread_t * th = malloc(sizeof(pthread_t));
+                lst->diff->th=th;
+                pthread_create(th, NULL, run_lecture, &lst->diff->sockUDP);
+                lst=lst->suivant;
+            }
+            transfert_liste(*selection, &liste);
+            //print_liste(liste);
+            break;
+        case 1:
+            if(nb==0 || liste_tmp==NULL)break;
+            diffuser_message(*selection);//pas tester
+            break;
+        case 2:
+            if(nb==0 || liste_tmp==NULL)break;
+            display_old_mess(*selection);//pas tester
+            break;
+        case 3:
+            return;
+            break;
+    }
+    /*bug
+     clear_liste(&liste_tmp);
+     clear_liste(selection);
+     */
+    
+}
+
 
 void lecture_gestionnaire(int sock){
     long lus;
@@ -299,39 +343,7 @@ void lecture_gestionnaire(int sock){
         return;
     }
     
-    liste_dif ** selection = (menu_diffuseurs(liste_tmp,nb));
-    if(selection==NULL) return;//Test pas bon
-    
-    liste_dif * lst=*selection;//Il la voulais pas dans le while
-    printf("SELECTION\n");
-    print_liste(lst);
-    
-    switch (menu_action_diff()) {
-        case 0:
-            while(lst!=NULL) {// ajout a la liste de lecture
-                init_sockUDP(lst->diff);
-                pthread_t th;
-                pthread_create(&th, NULL, run_lecture, &lst->diff->sockUDP);
-                lst=lst->suivant;
-            }
-            transfert_liste(*selection, &liste);
-            print_liste(liste);
-            break;
-        case 1:
-            diffuser_message(*selection);//pas tester
-            break;
-        case 2:
-            display_old_mess(*selection);//pas tester
-            break;
-        case 3:
-            return;
-            break;
-    }
-    /*bug
-    clear_liste(&liste_tmp);
-    clear_liste(selection);
-     */
-    
+    gestion_menu_diff(liste_tmp);
 }
 
 

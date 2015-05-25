@@ -59,7 +59,7 @@ int saisie(int nb,char * buff,const char * intro,int flag){
                         ok=0;
                         break;
                     }
-                    if(isalnum(c)){
+                    if(isalnum(c) || c=='/' || c=='.' || c=='~'){
                         buff[i++]=c;
                     }
                     break;

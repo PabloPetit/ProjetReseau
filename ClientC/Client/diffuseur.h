@@ -33,6 +33,7 @@ typedef struct diffuseur{
     char ip2[16];
     char port2[5];
     int sockUDP;
+    pthread_t * th;
 }diffuseur;
 
 typedef struct liste_dif{
@@ -60,4 +61,5 @@ void diffuser_message(liste_dif * );
 int check_old_mess(char *);
 void display_old_mess(liste_dif * lst);
 void reception_old_mess(int ,int);
+void gestion_menu_diff(liste_dif*);
 #endif /* defined(__Client__diffuseur__) */
