@@ -101,7 +101,6 @@ int regi(int sock){//[REGI␣id␣ip1␣port1␣ip2␣port2]4+1+8+1+15+1+4+1+15+
     snprintf(mess,58,"REGI %s %s %s %s %s\r\n",diff->id,diff->ipv4,diff->port_multi,ip,diff->port_tcp);
     send(sock, mess, 57, 0);
     lus=recv(sock, ret,6, 0);
-    printf("RECV : -%s-\n",ret);
     if(lus==6 && strcmp("REOK\r\n",ret)==0){
         int * tmp = malloc(sizeof(int));
         *tmp=sock;

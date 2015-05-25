@@ -24,6 +24,7 @@ void print_liste(liste_msg * liste){
     printf("\n---N° %s Type : %s Identifiant : %s---\n\n",lt->msg->num_mess,lt->msg->type,lt->msg->id);
     printf("%s\n",lt->msg->message);
     printf("\n--Fin de la liste --\n\n");
+    print("");
     pthread_mutex_unlock(&verrou);
 }
 
@@ -127,7 +128,8 @@ void charger_fichier(char * path){
     buff[1024]='\0';
     
     if((fic=open(path,O_RDONLY))==-1){
-        printf("Impossible de lire le fichier\n");
+        print("Impossible de lire le fichier\n");
+        return;
     }else{
       while((lus=read(fic,buff,1024))!=0){
             int index_point=0;

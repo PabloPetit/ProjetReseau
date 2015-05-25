@@ -176,6 +176,7 @@ int main(int argc, char * argv[]){
     }
     
     print_param_final(id,port_tcp,port_multi,ipv4);
+    print("");
     
     diff = make_diffuseur(id,port_tcp,port_multi,ipv4,10);
     
@@ -196,12 +197,6 @@ int main(int argc, char * argv[]){
     pthread_create(&thread_dif,NULL,diffuseur_run,NULL);
     
     menu_principal();
-
-    //exit(0);
-    //pthread_join(thread_tcp,NULL);
-    //pthread_join(thread_dif,NULL);
-    
-   // printf("END OF MAIN\n");
     
     return 0;
 }

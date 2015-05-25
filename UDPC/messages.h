@@ -10,6 +10,7 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #include <pthread.h>
+#include "saisie.h"
 #include "diffuseur.h"
 
 typedef struct message{

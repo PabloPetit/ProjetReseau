@@ -59,7 +59,7 @@ void * run_client(void * arg){
     recu=recv(sock,buff,1024*sizeof(char),0);
     
     if(!match_message(buff,recu,sock)){
-        printf("La demande du client ne respecte pas le format, connexion fermée.\n");
+        print("La demande du client ne respecte pas le format, connexion fermée.\n");
     }
     
     close(sock);
