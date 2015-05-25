@@ -32,10 +32,13 @@ int  saisie_tty_out(){
     return d;
 }
 
+char * intro = "\n\n\nRecepteur de messages : \n\n";
+
 int main(int argc, const char * argv[]) {
     system("clear");
     saisie_id();
     out = saisie_tty_out();
+    write(out,intro,strlen(intro));
     menu_principal();
     return 0;
 }

@@ -277,13 +277,13 @@ void gestion_menu_diff(liste_dif * tmp){
     switch (menu_action_diff()) {
         case 0:
             
-            
+            if(nb==0 || liste_tmp==NULL)break;
             
             while(lst!=NULL) {// ajout a la liste de lecture
                 init_sockUDP(lst->diff);
                 pthread_t * th = malloc(sizeof(pthread_t));
                 lst->diff->th=th;
-                pthread_create(th, NULL, run_lecture, &lst->diff);
+                pthread_create(th, NULL, run_lecture, lst->diff);
                 lst=lst->suivant;
             }
             transfert_liste(*selection, &liste);
