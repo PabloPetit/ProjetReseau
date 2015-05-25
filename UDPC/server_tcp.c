@@ -56,6 +56,7 @@ int match_message(char * msg,long size,int sock){
         post_old_msg(sock,nb);
     }else{
         printf("Type non reconnu\n");
+        return 0;
     }
     return 1;
 }
@@ -74,7 +75,7 @@ void * run_client(void * arg){
     if(!match_message(buff,recu,sock)){
         printf("La demande du client ne respecte pas le format, connexion fermée.\n");
     }
-    
+    printf("Transmission terminee\n");
     close(sock);
     return NULL;
 }
