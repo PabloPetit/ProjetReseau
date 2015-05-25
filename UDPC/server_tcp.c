@@ -22,12 +22,15 @@ void post_old_msg(int sock,int nb){
 
 int match_message(char * msg,long size,int sock){
     char type[5];
-    if(size<8||size>156){
-        return 1;
+    
+    if(size<10||size>156){
+        return 0;
     }
     snprintf(type,5,"%s",msg);
+    printf("MESS -%s-\n",msg);
+    printf("TYPE : -%s-\n",type);
     if(strcmp("MESS",type)==0){
-        if(size<15)return 1;
+        if(size<15)return 0;
         char id[9],mess[141];
         
         snprintf(id,9,"%s",(msg+5));
@@ -39,12 +42,12 @@ int match_message(char * msg,long size,int sock){
         tmp[8]='\0';
         send(sock,tmp,9,0);
     }else if(strcmp("LAST",type)==0){
-        if(size!=10)return 1;
+        if(size!=9)return 0;
         int nb;
         if((nb=atoi((msg+5)))<0)return 2;
         post_old_msg(sock,nb);
     }
-    return 0;
+    return 1;
 }
 
 void * run_client(void * arg){
