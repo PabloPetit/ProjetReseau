@@ -311,7 +311,7 @@ void gestion_menu_diff(liste_dif * tmp){
                 lst=lst->suivant;
             }
             transfert_liste(*selection, &liste);
-            print_liste(liste);
+            //print_liste(liste);
             break;
         case 1:
             diffuser_message(*selection);//pas tester
