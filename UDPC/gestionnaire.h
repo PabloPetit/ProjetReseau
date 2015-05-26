@@ -17,6 +17,7 @@
 #include <net/if.h>
 #include "menu.h"
 #include "saisie.h"
+#include "main.h"
 
 int recup_port();
 int recup_ip(char *);

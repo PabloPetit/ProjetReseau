@@ -2,6 +2,7 @@
 
 
 int menu_principal(){
+    extern liste_dif * liste;
     int ok=0;
     char * intro, *args[4];
     intro = "Menu Principal du Client:";
@@ -19,6 +20,7 @@ int menu_principal(){
                 connexion_gestionnaire();
                 break;
             case 2:
+                gestion_menu_diff(liste,MENU_PRINCIPAL);
                 break;
             case 3:
                 ok=1;

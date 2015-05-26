@@ -14,7 +14,7 @@ liste_dif * make_list(diffuseur * diff){
 
 diffuseur * make_diff(char * id,char * port1,char * ip1,char * port2, char * ip2){
     diffuseur * diff=malloc(sizeof(diffuseur));
-    snprintf(diff->id,8,"%s",id);
+    snprintf(diff->id,9,"%s",id);
     snprintf(diff->port1, 5, "%s",port1);
     snprintf(diff->port2, 5, "%s",port2);
     snprintf(diff->ip1,16,"%s",ip1);
@@ -111,6 +111,7 @@ int init_sockUDP(diffuseur * diff){
         fcntl( sock, F_SETFL, O_NONBLOCK);
         diff->sockUDP=sock;
     }
+    printf("display old : %s : %s : %s : %d\n",diff->id,diff->port1,diff->ip1, diff->sockUDP);
     return r!=-1;
 }
 
@@ -177,10 +178,14 @@ int connect_liste_diff(liste_dif * lst){
     return res;
 }
 
-int menu_action_diff(){
+int menu_action_diff(int flag){
     char * intro = "Choisissez une option : ";
     char * args[4];
-    args[0]="Ajouter a la liste de lecture";
+    if(flag==LECTURE_GEST){
+        args[0]="Ajouter a la liste de lecture";
+    }else{
+        args[0]="Supprimer de la liste de lecture";
+    }
     args[1]="Diffuser un message";
     args[2]="Demander la liste des derniers messages";
     args[3]="Quitter";
@@ -209,6 +214,7 @@ void diffuser_message(liste_dif * lst){
     char mess [157];
     snprintf(mess, 157,"MESS %s %s\r\n",id,texte);
     while(lst!=NULL){
+        printf("diff mess : %s\n",lst->diff->id);
         if(!send_msg(atoi(lst->diff->port2), lst->diff->ip2, mess)){
             char tmp[52];
             snprintf(tmp,52,"Envoie du message au diffuseur %s impossible.",lst->diff->id);
@@ -263,6 +269,7 @@ void display_old_mess(liste_dif * lst){
     char oldMess[9];
     snprintf(oldMess, 9, "LAST %s\r\n",tmp);
     while(lst!=NULL){
+      //  printf("display old : %s  %s %s\n",lst->diff->id,lst->diff->port2,lst->diff->ip2);
         struct sockaddr_in adress_sock;
         adress_sock.sin_family = AF_INET;
         adress_sock.sin_port = htons(atoi(lst->diff->port2));
@@ -290,28 +297,57 @@ int length(liste_dif * lst){
     return nb;
 }
 
-void gestion_menu_diff(liste_dif * tmp){
+void  suppression(liste_dif * lst){
+    if(liste == NULL || liste==0 || lst == NULL || lst==0){
+        return;
+    }
+    if(liste==lst){
+        liste=NULL;
+        return;
+    }
+    liste_dif * tmp = liste;
+    while(tmp != NULL){
+        if(tmp->suivant==lst){
+            tmp->suivant=lst->suivant;
+            return;
+        }
+        tmp=tmp->suivant;
+    }
+    
+}
+
+void gestion_menu_diff(liste_dif * tmp,int flag){
     int nb=length(tmp);
     liste_dif ** selection = (menu_diffuseurs(tmp,nb));
-    if(selection==NULL) return;//Test pas bon
-    
+    printf("AVANT\n");
+    if(selection==NULL || *selection==NULL) return;//tention
+    printf("APRES\n");
     liste_dif * lst=*selection;
     printf("SELECRTION\n");
     print_liste(lst);
     
-    if(nb==0 || liste_tmp==NULL)return;
-    
-    switch (menu_action_diff()) {
+    if(flag==LECTURE_GEST){
+        if(nb==0 || liste_tmp==NULL)return;
+    }
+    switch (menu_action_diff(flag)) {
         case 0:
-            while(lst!=NULL) {// ajout a la liste de lecture
-                init_sockUDP(lst->diff);
-                pthread_t * th = malloc(sizeof(pthread_t));
-                lst->diff->th=th;
-                pthread_create(th, NULL, run_lecture, lst->diff);
-                lst=lst->suivant;
+            if(flag ==LECTURE_GEST){
+                while(lst!=NULL) {// ajout a la liste de lecture
+                    init_sockUDP(lst->diff);
+                    pthread_t * th = malloc(sizeof(pthread_t));
+                    lst->diff->th=th;
+                    pthread_create(th, NULL, run_lecture, lst->diff);
+                    lst=lst->suivant;
+                }
+                transfert_liste(*selection, &liste);
+            }else if(flag==MENU_PRINCIPAL){
+                while(lst!=NULL){
+                    pthread_cancel(*lst->diff->th);
+                    close(lst->diff->sockUDP);
+                    suppression(lst);
+                    lst=lst->suivant;
+                }
             }
-            transfert_liste(*selection, &liste);
-            //print_liste(liste);
             break;
         case 1:
             diffuser_message(*selection);//pas tester
@@ -362,7 +398,7 @@ void lecture_gestionnaire(int sock){
         return;
     }
     
-    gestion_menu_diff(liste_tmp);
+    gestion_menu_diff(liste_tmp,LECTURE_GEST);
 }
 
 

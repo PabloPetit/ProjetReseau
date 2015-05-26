@@ -6,6 +6,7 @@
 #include "menu.h"
 #include "main.h"
 #include "gestionnaire.h"
+#include "diffuseur.h"
 
 int menu_principal();
 

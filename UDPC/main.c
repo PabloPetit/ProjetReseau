@@ -1,5 +1,20 @@
 #include "main.h"
 
+int out = 1;
+
+int  saisie_tty_out(){
+    char path[35];
+    path[34]='\0';
+    path[saisie(34, path,"Veuillez entrer le chemin du terminal/fichier vers lequel\nsera rediriger le mode verbeux", ALNU_SIZELESS)]='\0';
+    printf("PATH : -%s-\n",path);
+    int d;
+    d=open(path,O_WRONLY);
+    if (d == -1){
+        print("Vous devez entrer un chemin valide.");
+        return saisie_tty_out();
+    }
+    return d;
+}
 void print_help(){
     printf("\nDiffuseur de Message - C\n\n");
     printf("La ligne de commande doit contenir : \n");

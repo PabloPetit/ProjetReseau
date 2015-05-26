@@ -30,14 +30,14 @@ void * run_lecture(void * arg){
     char * tmp2 = "\n          ----------          \n";
     while(42==42){
         long lus;
-        char buff[143];
-        lus = recv(diff->sockUDP,buff,142,0);
+        char buff[162];
+        lus = recv(diff->sockUDP,buff,161,0);
         if(lus>=0){
             buff[lus]='\0';
             char tmp1[100];
             snprintf(tmp1,100,"\nMessage reçu de : %s a %s:\n",diff->id,getTime());
             write(out,tmp1,strlen(tmp1));
-            write(out,buff,lus);
+            write(out,(buff+5),lus-5);
             write(out,tmp2,strlen(tmp2));
         }
     sleep(1);

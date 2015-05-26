@@ -37,7 +37,6 @@ liste_dif ** menu_diffuseurs(liste_dif * lst,int nb){//La liste tmp
         tabList[i++] = ld;
         ld=ld->suivant;
     }
-    //printf("NB : %d i : %d\n",nb,i);
     
     while(!ok){
         system("clear");

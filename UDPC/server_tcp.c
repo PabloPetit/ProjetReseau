@@ -1,5 +1,7 @@
 #include "server_tcp.h"
 
+extern int out;
+
 void post_old_msg(int sock,int nb){
     extern liste_msg * lt_df;
     extern pthread_mutex_t verrou;
@@ -28,12 +30,12 @@ int match_message(char * msg,long size,int sock){
     char type[5];
     
     if(size<9||size>156){
-        printf("Message de taille incorrecte\n");
+        write(out,"Message de taille incorrecte\n",strlen("Message de taille incorrecte\n"));
     }
     snprintf(type,5,"%s",msg);
     if(strcmp("MESS",type)==0){
         if(size<15){
-            printf("Message de taille incorrecte(2)\n");
+            write(out,"Message de taille incorrecte(2)\n",strlen("Message de taille incorrecte(2)\n"));
             return 0;
         }
         char id[9],mess[141];
@@ -48,7 +50,7 @@ int match_message(char * msg,long size,int sock){
         send(sock,tmp,9,0);
     }else if(strcmp("LAST",type)==0){
         if(size!=9){
-            printf("Message de taille incorrecte(3)\n");
+            write(out,"Message de taille incorrecte(3)\n",strlen("Message de taille incorrecte(3)\n"));
             return 0;
         }
         int nb;
@@ -67,15 +69,14 @@ void * run_client(void * arg){
     char buff[1025];
     buff[1024]='\0';
    
-    
-    printf("\nUn nouveau client c'est connecter.\n\n");
+    write(out,"\nUn nouveau client c'est connecter.\n\n",strlen("\nUn nouveau client c'est connecter.\n\n"));
     
     recu=recv(sock,buff,1024*sizeof(char),0);
     
     if(!match_message(buff,recu,sock)){
-        printf("La demande du client ne respecte pas le format, connexion fermée.\n");
+        write(out,"La demande du client ne respecte pas le format, connexion fermée.\n",strlen("La demande du client ne respecte pas le format, connexion fermée.\n"));
     }
-    printf("Transmission terminee\n");
+    write(out,"Transmission terminee\n",strlen("Transmission terminee\n"));
     close(sock);
     return NULL;
 }

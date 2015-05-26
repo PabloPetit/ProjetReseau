@@ -25,6 +25,8 @@
 
 
 #define REUSE 15
+#define MENU_PRINCIPAL 0
+#define LECTURE_GEST 1
 
 typedef struct diffuseur{
     char id[9];
@@ -43,6 +45,7 @@ typedef struct liste_dif{
 
 #include "menu.h"
 
+void  suppression(liste_dif *);
 liste_dif * make_list(diffuseur *);
 diffuseur * make_diff(char * ,char *,char *,char *, char * );
 void add_diff(liste_dif **,diffuseur *);
@@ -61,5 +64,5 @@ void diffuser_message(liste_dif * );
 int check_old_mess(char *);
 void display_old_mess(liste_dif * lst);
 void reception_old_mess(int ,int);
-void gestion_menu_diff(liste_dif*);
+void gestion_menu_diff(liste_dif*,int);
 #endif /* defined(__Client__diffuseur__) */

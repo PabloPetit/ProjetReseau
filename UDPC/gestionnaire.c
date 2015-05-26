@@ -1,5 +1,7 @@
 #include "gestionnaire.h"
 
+extern int out;
+
 int recup_port(){
     char buff[5];
     buff[4]='\0';
@@ -127,7 +129,8 @@ void * run_gestionnaire(void * arg){
     }
     close(sock);
     free(arg);
-    print("Connexion interrompu avec un des gestionnaire.");
+    
+    write(out,"Connexion interrompu avec un des gestionnaire.",strlen("Connexion interrompu avec un des gestionnaire."));
     return NULL;
 }
 

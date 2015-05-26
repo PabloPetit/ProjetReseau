@@ -1,7 +1,7 @@
 #include "diffuseur.h"
 
 diffuseur * diff;
-
+extern int out;
 void * diffuseur_run(void * arg){
     extern liste_msg * lt_at;
     extern liste_msg * lt_df;
@@ -13,7 +13,7 @@ void * diffuseur_run(void * arg){
     hints.ai_family = AF_INET;
     hints.ai_socktype=SOCK_DGRAM;
     int r=getaddrinfo(diff->ipv4,diff->port_multi,NULL,&first_info);
-    
+    char * tmp="Message envoye : \n";
     if(r==0){
         if(first_info!=NULL){
             
@@ -26,8 +26,30 @@ void * diffuseur_run(void * arg){
                     sleep(1);
                     continue;
                 }
+                
+                //Bricolage :
+                /*
+                char mess_tmp[141];
+                int i;
+                
+                for( i = 0;i<141;i++){
+                    mess_tmp[i]='#';
+                }
+                mess_tmp[140]='\0';
+                
+                snprintf(mess_tmp, strlen(msg->message)+1,"%s",msg->message);
+                
+                if(strlen(msg->message)<140){
+                    mess_tmp[strlen(msg->message)+1]='#';
+                }
+                */
+                
+                // /Bricole
+                
                 char buff[1024];
-                sprintf(buff,"%s\r\n",msg->message);
+                sprintf(buff,"DIFF %s %s %s\r\n",msg->num_mess,msg->id,msg->message);
+                write(out,tmp,strlen(tmp));
+                write(out,buff,strlen(buff));
                 sendto(sock,buff,strlen(buff),0,saddr,(socklen_t)sizeof(struct sockaddr_in));
                 sleep(diff->interval);
             }
@@ -72,7 +94,7 @@ diffuseur * make_diffuseur(char * id,char* portR,char * portM,char * ipv4,int in
 }
 
 void print_diffuseur(diffuseur* dif){
-    printf("Informations sur le Diffuseur : \n\n");
+    printf("\nInformations sur le Diffuseur : \n\n");
     printf("Id : %s\n",dif->id);
     printf("Port de Diffusion : %s\n",dif->port_multi);
     printf("Port de Reception : %s\n",dif->port_tcp);

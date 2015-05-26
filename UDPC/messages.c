@@ -30,13 +30,17 @@ void print_liste(liste_msg * liste){
 
 void format_mess(char * src,char * dest){
     memset(dest,'#',140);
-    if(strlen(dest)<141){
-        dest[sprintf(dest,"%s",src)]='#';
+    //printf("SRC -%s-\n",src);
+    if(strlen(src)<141){
+        sprintf(dest,"%s",src);
+        dest[strlen(src)]='#';
+        //dest[sprintf(dest,"%s",src)]='#';
     }
     else{
          snprintf(dest,141,"%s",src);
     }
     dest[140]='\0';
+    printf("DEST : %lu -%s-\n",strlen(dest),dest);
 }
 
 void format_id(char * src,char * dest){
@@ -122,13 +126,14 @@ message * transfert(){
 void charger_fichier(char * path){
     int fic,i;
     long lus;
+    extern int out;
     printf("%s\n",path );
     extern diffuseur * diff;
     char * buff = malloc(sizeof(char)*1025);
     buff[1024]='\0';
     
     if((fic=open(path,O_RDONLY))==-1){
-        print("Impossible de lire le fichier\n");
+        write(out, "Impossible de lire le fichier\n", strlen("Impossible de lire le fichier\n"));
         return;
     }else{
       while((lus=read(fic,buff,1024))!=0){
