@@ -45,6 +45,7 @@ typedef struct liste_dif{
 
 #include "menu.h"
 
+char * convert(char * );
 void  suppression(liste_dif *);
 liste_dif * make_list(diffuseur *);
 diffuseur * make_diff(char * ,char *,char *,char *, char * );

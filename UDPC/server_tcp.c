@@ -49,7 +49,7 @@ int match_message(char * msg,long size,int sock){
         tmp[8]='\0';
         send(sock,tmp,9,0);
     }else if(strcmp("LAST",type)==0){
-        if(size!=9){
+        if(size!=10){
             write(out,"Message de taille incorrecte(3)\n",strlen("Message de taille incorrecte(3)\n"));
             return 0;
         }

@@ -1,11 +1,11 @@
 SOURCES=main.c diffuseur.c messages.c server_tcp.c menu.c menu_principal.c getch.c saisie.c gestionnaire.c
 
 OBJECTS =$(SOURCES:.c=.o)
-CFLAGS= -std=c99 -std=gnu99 -Wall -g  -pthread
+CFLAGS= -Wall -g  -pthread
 EXECUTABLE=main
 
 $(EXECUTABLE): $(OBJECTS)
-	gcc -o $(EXECUTABLE) $(OBJECTS)
+	gcc $(CFLAGS) -o $(EXECUTABLE) $(OBJECTS)
 
 %.o : %.c
 	gcc -c $(CFLAGS) $< -o $@

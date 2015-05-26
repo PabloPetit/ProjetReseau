@@ -52,7 +52,7 @@ int connexion(int port, char * ip){//Pour choix : machine || ip
     char tmp[5];
     tmp[4]='\0';
     snprintf(tmp,5,"%d",port);
-    int r=getaddrinfo("ip",tmp,&hints,&first_info);
+    int r=getaddrinfo(ip,tmp,&hints,&first_info);
     if(r==0){
         if(first_info!=NULL){
             addressin=(struct sockaddr_in *)first_info->ai_addr;

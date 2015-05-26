@@ -125,7 +125,7 @@ int main(int argc, char * argv[]){
     port_multi[4]='\0';
     
     //traitement des arguments
-    for(int i=1;i<argc;i++){
+    for(i=1;i<argc;i++){
         if(strcmp("-id",argv[i])==0){
             if(++i<argc && check_id_valide(argv[i])){
                 id=argv[i];

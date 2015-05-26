@@ -42,6 +42,7 @@ int connexion2(int port, char * ip){// Pour choix : localhost
 }
 
 int connexion(int port, char * ip){//Pour choix : machine || ip
+    printf("\nConnexion en cours...\n\n");
     int sock=socket(PF_INET,SOCK_STREAM,0);
     struct sockaddr_in *addressin;
     struct addrinfo *first_info;
@@ -52,7 +53,7 @@ int connexion(int port, char * ip){//Pour choix : machine || ip
     char tmp[5];
     tmp[4]='\0';
     snprintf(tmp,5,"%d",port);
-    int r=getaddrinfo("ip",tmp,&hints,&first_info);
+    int r=getaddrinfo(ip,tmp,&hints,&first_info);
     if(r==0){
         if(first_info!=NULL){
             addressin=(struct sockaddr_in *)first_info->ai_addr;

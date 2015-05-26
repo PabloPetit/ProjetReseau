@@ -4,15 +4,15 @@
 int menu_principal(){
     extern liste_dif * liste;
     int ok=0;
-    char * intro, *args[4];
+    char * intro, *args[3];
     intro = "Menu Principal du Client:";
     args[0]="Changer d'identifiant.";
     args[1]="Consulter un gestionnaire";
-    args[2]="Liste des diffuseurs";
-    args[3]="Quitter";
+    //args[2]="Liste des diffuseurs";
+    args[2]="Quitter";
     
     while(!ok){
-        switch(menu_simple(intro,args,4)){
+        switch(menu_simple(intro,args,3)){
             case 0:
                 saisie_id();
                 break;
@@ -20,11 +20,14 @@ int menu_principal(){
                 connexion_gestionnaire();
                 break;
             case 2:
-                gestion_menu_diff(liste,MENU_PRINCIPAL);
+                ok=1;
+                //gestion_menu_diff(liste,MENU_PRINCIPAL);
                 break;
-            case 3:
+            /*
+             case 3:
                 ok=1;
                 break;
+             */
         }
     }
     return 0;

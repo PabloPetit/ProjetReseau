@@ -193,11 +193,45 @@ int menu_action_diff(int flag){
     return menu_simple(intro,args,4);
 }
 
+/*
+int send_msg(int port, char * addr, char * mess){
+    
+    int sock=socket(PF_INET,SOCK_STREAM,0);
+    struct sockaddr_in *addressin;
+    struct addrinfo *first_info;
+    struct addrinfo hints;
+    bzero(&hints,sizeof(struct addrinfo));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype=SOCK_STREAM;
+    char tmp[5];
+    tmp[4]='\0';
+    snprintf(tmp,5,"%d",port);
+    int r=getaddrinfo(addr,tmp,&hints,&first_info);
+    if(r==0){
+        while(first_info!=NULL){
+            addressin=(struct sockaddr_in *)first_info->ai_addr;
+            int ret=connect(sock,(struct sockaddr *)addressin,(socklen_t)sizeof(struct sockaddr_in));
+            if(ret==0){
+                send(sock,mess,strlen(mess),0);
+                close(sock);
+                return 0;
+            }
+            else{
+                print("Probleme de connexion!\n");
+            }
+            close(sock);
+            first_info=first_info->ai_next;
+        }
+    }
+    return -1;
+
+}*/
+
 int send_msg(int port, char * addr, char * mess){//A faire peut etre avec gettaddrinfo
     struct sockaddr_in adress_sock;
     adress_sock.sin_family = AF_INET;
     adress_sock.sin_port = htons(port);
-    inet_aton(addr,&adress_sock.sin_addr);
+    inet_aton(convert(addr),&adress_sock.sin_addr);
     int descr=socket(PF_INET,SOCK_STREAM,0);
     int r=connect(descr,(struct sockaddr *)&adress_sock,sizeof(struct sockaddr_in));
     if(r!=-1){
@@ -205,6 +239,30 @@ int send_msg(int port, char * addr, char * mess){//A faire peut etre avec gettad
         close(descr);
     }
     return r!=-1;
+}
+
+
+char * convert(char * ip){
+    char a[4];
+    char b[4];
+    char c[4];
+    char d[4];
+    printf("IP : -%s-",ip);
+    
+    snprintf(a,4,"%s",ip);
+    snprintf(b,4,"%s",ip+4);
+    snprintf(c,4,"%s",ip+8);
+    snprintf(d,4,"%s",ip+12);
+    
+    int a1 =atoi(a);
+    int b1 =atoi(b);
+    int c1 =atoi(c);
+    int d1 =atoi(d);
+    
+    char * ret=malloc(sizeof(char)*16);
+    sprintf(ret,"%d.%d.%d.%d",a1,b1,c1,d1);
+    printf("RETOUR IP : -%s-\n",ret);
+    return  ret;
 }
 
 void diffuser_message(liste_dif * lst){
@@ -218,7 +276,7 @@ void diffuser_message(liste_dif * lst){
         if(!send_msg(atoi(lst->diff->port2), lst->diff->ip2, mess)){
             char tmp[52];
             snprintf(tmp,52,"Envoie du message au diffuseur %s impossible.",lst->diff->id);
-            print(tmp);
+            
         }
         lst=lst->suivant;
     }
@@ -245,11 +303,11 @@ void reception_old_mess(int sock,int nb){
             return;
         }
         if(lus != 161){
-            print("Format errone, abandon.");
+            printf("Format errone, abandon.\n");
             return;
         }
         if(!check_old_mess(tmp)){
-            print("Format errone, abandon.-1-");
+            printf("Format errone, abandon.-1-");
             return;
         }
         
@@ -260,6 +318,47 @@ void reception_old_mess(int sock,int nb){
         nb_recu++;
     }
 }
+/*
+void display_old_mess(liste_dif * lst){
+    char tmp [3];
+    saisie(2, tmp,"Combien de message a recuperer ? : ", NUMERIC);
+    int nb = atoi (tmp);
+    
+    char oldMess[9];
+    snprintf(oldMess, 9, "LAST %s\r\n",tmp);
+    while(lst!=NULL){
+        
+        int sock=socket(PF_INET,SOCK_STREAM,0);
+        struct sockaddr_in *addressin;
+        struct addrinfo *first_info;
+        struct addrinfo hints;
+        bzero(&hints,sizeof(struct addrinfo));
+        hints.ai_family = AF_INET;
+        hints.ai_socktype=SOCK_STREAM;
+        char tmp[5];
+        tmp[4]='\0';
+        snprintf(tmp,5,"%s",lst->diff->port2);
+        int r=getaddrinfo(lst->diff->ip2,tmp,&hints,&first_info);
+        if(r==0){
+            if(first_info!=NULL){
+                addressin=(struct sockaddr_in *)first_info->ai_addr;
+                int ret=connect(sock,(struct sockaddr *)addressin,(socklen_t)sizeof(struct sockaddr_in));
+                if(ret==0){
+                    send(sock,oldMess,9,0);
+                    reception_old_mess(sock,nb);
+                }else{
+                    char tmp[56];
+                    snprintf(tmp,56,"Envoie de la demande au diffuseur %s impossible.",lst->diff->id);
+                    print(tmp);
+                }
+            }
+        }
+        close(sock);
+        lst=lst->suivant;
+    }
+}
+*/
+
 
 void display_old_mess(liste_dif * lst){
     char tmp [3];
@@ -273,13 +372,13 @@ void display_old_mess(liste_dif * lst){
         struct sockaddr_in adress_sock;
         adress_sock.sin_family = AF_INET;
         adress_sock.sin_port = htons(atoi(lst->diff->port2));
-        inet_aton(lst->diff->ip2,&adress_sock.sin_addr);
+        inet_aton(convert(lst->diff->ip2),&adress_sock.sin_addr);
         int descr=socket(PF_INET,SOCK_STREAM,0);
         int r=connect(descr,(struct sockaddr *)&adress_sock,sizeof(struct sockaddr_in));
         if(r==-1){
             char tmp[56];
             snprintf(tmp,56,"Envoie de la demande au diffuseur %s impossible.",lst->diff->id);
-            print(tmp);
+            
         }
         send(descr,oldMess,9,0);
         reception_old_mess(descr,nb);
@@ -319,35 +418,20 @@ void  suppression(liste_dif * lst){
 void gestion_menu_diff(liste_dif * tmp,int flag){
     int nb=length(tmp);
     liste_dif ** selection = (menu_diffuseurs(tmp,nb));
-    printf("AVANT\n");
-    if(selection==NULL || *selection==NULL) return;//tention
-    printf("APRES\n");
     liste_dif * lst=*selection;
-    printf("SELECRTION\n");
-    print_liste(lst);
     
-    if(flag==LECTURE_GEST){
-        if(nb==0 || liste_tmp==NULL)return;
-    }
+    if(nb==0 || liste_tmp==NULL)return;
+    
     switch (menu_action_diff(flag)) {
         case 0:
-            if(flag ==LECTURE_GEST){
-                while(lst!=NULL) {// ajout a la liste de lecture
-                    init_sockUDP(lst->diff);
-                    pthread_t * th = malloc(sizeof(pthread_t));
-                    lst->diff->th=th;
-                    pthread_create(th, NULL, run_lecture, lst->diff);
-                    lst=lst->suivant;
-                }
-                transfert_liste(*selection, &liste);
-            }else if(flag==MENU_PRINCIPAL){
-                while(lst!=NULL){
-                    pthread_cancel(*lst->diff->th);
-                    close(lst->diff->sockUDP);
-                    suppression(lst);
-                    lst=lst->suivant;
-                }
+            while(lst!=NULL) {// ajout a la liste de lecture
+                init_sockUDP(lst->diff);
+                pthread_t * th = malloc(sizeof(pthread_t));
+                lst->diff->th=th;
+                pthread_create(th, NULL, run_lecture, lst->diff);
+                lst=lst->suivant;
             }
+            transfert_liste(*selection, &liste);
             break;
         case 1:
             diffuser_message(*selection);//pas tester

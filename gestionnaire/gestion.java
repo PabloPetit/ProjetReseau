@@ -20,8 +20,8 @@ public class gestion {
 	
 	public gestion(int port, int maxDiff){
 		try{
-			this.port = port;
-			this.maxDiff = maxDiff;
+			this.port = (port<0 || port>9999)?5566:port;
+			this.maxDiff =  (maxDiff<0 || maxDiff>99)?10:maxDiff;
 			server = new ServerSocket(port);
 			clear();
 			System.out.println("Serveur Gestionnaire créé sur le port "+port);
@@ -65,13 +65,19 @@ public class gestion {
 	public static void main(String[] args){
 		clear();
 		
-		if(args.length > 0){
+		if(args.length == 1){
 			if(args[0].equals("d")){
 				gestion ges = new gestion(5566, 15);
 				ges.serviceGestion();
-			}else{
-				gestion ges = new gestion(Integer.parseInt(args[0]),Integer.parseInt( args[1]));
-				ges.serviceGestion();
+			}else if(args.length == 2){
+				try{
+					gestion ges = new gestion(Integer.parseInt(args[0]),Integer.parseInt( args[1]));
+					ges.serviceGestion();
+				}catch(Exception e){
+					System.err.println("Arguments errone, lancement par default.");
+					gestion ges = new gestion(5566, 15);
+					ges.serviceGestion();
+				}
 			}
 		}else{
 		
