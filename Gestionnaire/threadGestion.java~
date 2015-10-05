@@ -69,9 +69,8 @@ public class threadGestion implements Runnable {
 						for(String Diff : listDiff){
 							pw.print("ITEM "+Diff+"\r\n");
 							pw.flush();
-							
+							break;
 						}
-						break;
 					}
 					//requete test
 					else if(req[0].equals("IMOK")){
